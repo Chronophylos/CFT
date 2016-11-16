@@ -1,0 +1,41 @@
+﻿<Window x:Name="CFT" x:Class="CerealFileTransfer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CerealFileTransfer"
+        mc:Ignorable="d"
+        Title="Cereal File Transfer" Height="230" Width="525" Topmost="True" ResizeMode="CanMinimize">
+    <Grid>
+        <ProgressBar Margin="403,80,-40,0" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Width="156" Height="16" VerticalAlignment="Top">
+            <ProgressBar.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </ProgressBar.RenderTransform>
+        </ProgressBar>
+        <Button x:Name="button" Content="Send" HorizontalAlignment="Left" Margin="432,168,0,0" VerticalAlignment="Top" Width="75"/>
+        <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="23" Margin="10,168,0,0" TextWrapping="Wrap" Text="Path" VerticalAlignment="Top" Width="417"/>
+        <RichTextBox x:Name="rtb_Log" HorizontalAlignment="Left" Margin="10,10,0,39" Width="456">
+            <FlowDocument>
+                <Paragraph>
+                    <Run Text=""/>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+        <ProgressBar Margin="423,80,-58,0" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Width="154" Height="16" VerticalAlignment="Top">
+            <ProgressBar.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </ProgressBar.RenderTransform>
+        </ProgressBar>
+
+    </Grid>
+</Window>
