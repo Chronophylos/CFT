@@ -1,8 +1,8 @@
 using System;
 using System.IO.Ports;
 
-namespace __Serial__ {
-    class Serial {
+namespace __Cereal__ {
+    class Cereal {
         private string portName;
         private int baudrate;
         private int dataBits;
