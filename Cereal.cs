@@ -10,7 +10,7 @@ namespace __Cereal__ {
         private Parity parity; // Festlegung der Parität (Parity.Even, Parity.Mark, Parity.None, Parity.Odd, Parity.Space)
         private SerialPort sp;
         
-        public Serial(string portName, int baudrate, int dataBits, StopBits stopBits, Parity parity) {
+        public Cereal(string portName, int baudrate, int dataBits, StopBits stopBits, Parity parity) {
             this.portName = portName;
             this.baudrate = baudrate;
             this.dataBits = dataBits;

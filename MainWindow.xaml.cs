@@ -23,7 +23,7 @@ namespace CerealFileTransfer {
     public partial class MainWindow : Window {
         public MainWindow() {
             InitializeComponent();
-            Serial rs232 = new Cereal("COM1", 9600, 8, StopBits.One, Parity.None);
+            Cereal rs232 = new Cereal("COM1", 9600, 8, StopBits.One, Parity.None);
 
         }
     }
