@@ -26,3 +26,6 @@ M:\cft\obj\Debug\MainWindow.baml
 M:\cft\obj\Debug\CerealFileTransfer.g.resources
 M:\cft\obj\Debug\CerealFileTransfer.Properties.Resources.resources
 M:\cft\obj\Debug\CerealFileTransfer.csproj.GenerateResource.Cache
+\\bsgg.local\Public\HomesSchueler\2014_BGDE\nikzimmerm\Projekte\CTF\bin\Debug\CerealFileTransfer.exe.config
+\\bsgg.local\Public\HomesSchueler\2014_BGDE\nikzimmerm\Projekte\CTF\obj\Debug\CerealFileTransfer.exe
+\\bsgg.local\Public\HomesSchueler\2014_BGDE\nikzimmerm\Projekte\CTF\obj\Debug\CerealFileTransfer.pdb
