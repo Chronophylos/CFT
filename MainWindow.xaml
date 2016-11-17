@@ -19,7 +19,7 @@
         </ProgressBar>
         <Button x:Name="button" Content="Send" HorizontalAlignment="Left" Margin="432,168,0,0" VerticalAlignment="Top" Width="75"/>
         <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="23" Margin="10,168,0,0" TextWrapping="Wrap" Text="Path" VerticalAlignment="Top" Width="417"/>
-        <RichTextBox x:Name="rtb_Log" HorizontalAlignment="Left" Margin="10,10,0,39" Width="456">
+        <RichTextBox x:Name="rtb_Log" HorizontalAlignment="Left" Margin="10,10,0,39" Width="456" IsDocumentEnabled="True">
             <FlowDocument>
                 <Paragraph>
                     <Run Text=""/>

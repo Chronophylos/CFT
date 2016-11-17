@@ -29,3 +29,14 @@ M:\cft\obj\Debug\CerealFileTransfer.csproj.GenerateResource.Cache
 \\bsgg.local\Public\HomesSchueler\2014_BGDE\nikzimmerm\Projekte\CTF\bin\Debug\CerealFileTransfer.exe.config
 \\bsgg.local\Public\HomesSchueler\2014_BGDE\nikzimmerm\Projekte\CTF\obj\Debug\CerealFileTransfer.exe
 \\bsgg.local\Public\HomesSchueler\2014_BGDE\nikzimmerm\Projekte\CTF\obj\Debug\CerealFileTransfer.pdb
+\\bsgg.local\Public\HomesSchueler\2014_BGDE\nikzimmerm\Projekte\CTF\bin\Debug\CerealFileTransfer.exe
+\\bsgg.local\Public\HomesSchueler\2014_BGDE\nikzimmerm\Projekte\CTF\bin\Debug\CerealFileTransfer.pdb
+\\bsgg.local\Public\HomesSchueler\2014_BGDE\nikzimmerm\Projekte\CTF\obj\Debug\CerealFileTransfer.csprojResolveAssemblyReference.cache
+\\bsgg.local\Public\HomesSchueler\2014_BGDE\nikzimmerm\Projekte\CTF\obj\Debug\MainWindow.g.cs
+\\bsgg.local\Public\HomesSchueler\2014_BGDE\nikzimmerm\Projekte\CTF\obj\Debug\App.g.cs
+\\bsgg.local\Public\HomesSchueler\2014_BGDE\nikzimmerm\Projekte\CTF\obj\Debug\CerealFileTransfer_MarkupCompile.cache
+\\bsgg.local\Public\HomesSchueler\2014_BGDE\nikzimmerm\Projekte\CTF\obj\Debug\CerealFileTransfer_MarkupCompile.lref
+\\bsgg.local\Public\HomesSchueler\2014_BGDE\nikzimmerm\Projekte\CTF\obj\Debug\MainWindow.baml
+\\bsgg.local\Public\HomesSchueler\2014_BGDE\nikzimmerm\Projekte\CTF\obj\Debug\CerealFileTransfer.g.resources
+\\bsgg.local\Public\HomesSchueler\2014_BGDE\nikzimmerm\Projekte\CTF\obj\Debug\CerealFileTransfer.Properties.Resources.resources
+\\bsgg.local\Public\HomesSchueler\2014_BGDE\nikzimmerm\Projekte\CTF\obj\Debug\CerealFileTransfer.csproj.GenerateResource.Cache

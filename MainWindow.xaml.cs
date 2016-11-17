@@ -38,6 +38,7 @@ namespace CerealFileTransfer {
                     } 
                 } else { retryCOM1 = false; }
             }
+            rtb_Log.AppendText("[  OK  ] Port COM1 opened");
         }
     }
 }
