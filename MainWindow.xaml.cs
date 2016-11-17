@@ -13,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using __Serial__;
+using __Cereal__;
 
 
 namespace CerealFileTransfer {
@@ -23,7 +23,7 @@ namespace CerealFileTransfer {
     public partial class MainWindow : Window {
         public MainWindow() {
             InitializeComponent();
-            Serial rs232 = new Serial("COM1", 9600, 8, StopBits.One, Parity.None);
+            Serial rs232 = new Cereal("COM1", 9600, 8, StopBits.One, Parity.None);
 
         }
     }
