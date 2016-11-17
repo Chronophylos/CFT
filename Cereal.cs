@@ -10,7 +10,7 @@ namespace __Cereal__ {
         private Parity parity; // Festlegung der Parität (Parity.Even, Parity.Mark, Parity.None, Parity.Odd, Parity.Space)
         private SerialPort sp;
         
-        public Serial(string portName, int baudrate, int dataBits, StopBits stopBits, Parity parity) {
+        public Cereal(string portName, int baudrate, int dataBits, StopBits stopBits, Parity parity) {
             this.portName = portName;
             this.baudrate = baudrate;
             this.dataBits = dataBits;
@@ -27,10 +27,10 @@ namespace __Cereal__ {
         
         public bool open() {
             try { sp.Open(); }
-            catch(UnauthorizedAccessException ex){ return false; }
-            catch (ArgumentOutOfRangeException ex){ return false; }
-            catch (ArgumentException ex){ return false; }
-            catch (InvalidOperationException ex){ return false; }
+            catch(UnauthorizedAccessException){ return false; }
+            catch (ArgumentOutOfRangeException){ return false; }
+            catch (ArgumentException){ return false; }
+            catch (InvalidOperationException){ return false; }
             return true;
         }       
         public void close(){ sp.Close(); }
@@ -42,9 +42,10 @@ namespace __Cereal__ {
         public string readLine(){ return sp.ReadLine(); }
         
         public void write(int value){
-            System.Byte[] b = new System.Byte[1];
-            b[0] = (byte)value;
-            sp.Write(b, 0, 1);
+            //System.Byte[] b = new System.Byte[1];
+            //b[0] = (byte)value;
+            //sp.Write(b, 0, 1);
+            sp.Write(BitConverter.GetBytes(value), 0 , 1);
         }     
         public void write(System.Byte[] buffer, int bytesToWrite){ sp.Write(buffer, 0, bytesToWrite); }
         public void write(string s){ sp.Write(s); }    
