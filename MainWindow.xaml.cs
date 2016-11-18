@@ -19,7 +19,6 @@ namespace CerealFileTransfer {
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window {
         public MainWindow() {
             InitializeComponent();
             string portName = "COM1";
@@ -29,7 +28,7 @@ namespace CerealFileTransfer {
             Parity parity = Parity.None
             Cereal rs232 = new Cereal(portName, baudrate, dataBits, stopBits, parity);
             rtb_Log.AppendText("[ INFO ] Created Serial Port Driver on " + portName +
-                               " with " + dataBits " databits, " + stopBits " and " + 
+                               " with " + dataBits " databits, " + stopBits " and " +
                                stopBits + " at a speed of " + baudrate " bps");
 
             /* open COM1
@@ -50,7 +49,7 @@ namespace CerealFileTransfer {
                                             MessageBoxResult.OK)) {
                         case MessageBoxResult.OK: break;
                         case MessageBoxResult.Cancel: return;
-                    } 
+                    }
                 } else { break; //retryCOM1 = false; }
             }
             rtb_Log.AppendText("[  OK  ] Port " + portName + " opened");
@@ -61,6 +60,26 @@ namespace CerealFileTransfer {
             while (!rs232.isDCD()); // we're waiting
             rtb_Log.AppendText("[  OK  ] Partner ready");
             // now it is the GUIs turn, we're done here
+        }
+
+        // convert control and data to a package ready to send
+        stringToPackage(string control, string data){
+            byte[] controlBytes = new byte[4];
+            System.Buffer.BlockCopy(control.ToCharArray(), 0,
+                                    controlBytes, 0, 4);
+            int dataSize = data.Length * sizeof(char);
+            byte[] dataSizeBytes = new byte[4](BitConverter.GetBytes(dataSize));
+            byte[] dataBytes = new byte[dataSize];
+            System.Buffer.BlockCopy(data.ToCharArray(), 0,
+                                    dataBytes, 0, 4);
+
+            byte[] package = new byte[4 + 4 + dataSize];
+            package = controlBytes.Concat(dataSizeBytes.Concat(dataBytes).ToArray()).ToArray();
+            /*package = controlBytes;
+            package.AddRange(dataSizeBytes);
+            package.AddRange(dataBytes);*/
+
+            return package;
         }
     }
 }
