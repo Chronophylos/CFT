@@ -103,5 +103,13 @@ namespace CerealFileTransfer {
             rtb_Log.AppendText("[  OK  ] Partner ready\n");
             // now it is the GUIs turn, we're done here
         }
+
+        private void btn_browse_Click(Object sender, RoutedEventArgs e) {
+
+        }
+
+        private void btn_send_Click(Object sender, RoutedEventArgs e) {
+
+        }
     }
 }

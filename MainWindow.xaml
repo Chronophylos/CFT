@@ -8,13 +8,11 @@
         mc:Ignorable="d"
         Title="Cereal File Transfer" Height="401.667" Width="683.667" Topmost="True" Loaded="CFT_Loaded">
     <Grid>
-        <ProgressBar x:Name="pb_down" Margin="79,0,10,35" RenderTransformOrigin="0.5,0.5" Height="16" VerticalAlignment="Bottom"/>
-        <Button x:Name="button" Content="Send" Margin="0,0,10,10" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75"/>
-        <TextBox x:Name="textBox" Margin="10,0,90,10" TextWrapping="Wrap" Text="Path" VerticalAlignment="Bottom" Height="20"/>
-        <RichTextBox x:Name="rtb_Log" Margin="10,10,10,77" FontFamily="Source Code Pro" IsReadOnly="True" TextOptions.TextFormattingMode="Display" TextOptions.TextHintingMode="Fixed" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Block.LineHeight="6"/>
-        <ProgressBar x:Name="pb_up" Margin="79,0,10,56" RenderTransformOrigin="0.5,0.5" Height="16" VerticalAlignment="Bottom"/>
-        <Label Content="Upload" HorizontalAlignment="Left" Margin="10,0,0,48" Height="26" VerticalAlignment="Bottom"/>
-        <Label Content="Download" HorizontalAlignment="Left" Margin="10,0,0,27" Height="26" VerticalAlignment="Bottom"/>
-
+        <ProgressBar x:Name="pb_progress" Margin="71,0,10,35" RenderTransformOrigin="0.5,0.5" Height="16" VerticalAlignment="Bottom" Value="100" Foreground="#FF06B025"/>
+        <Button x:Name="btn_send" Content="Send" Margin="0,0,10,10" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75" Click="btn_send_Click"/>
+        <TextBox x:Name="txb_path" Margin="10,0,115,10" TextWrapping="Wrap" Text="Path" VerticalAlignment="Bottom" Height="20"/>
+        <RichTextBox x:Name="rtb_Log" Margin="10,10,10,58" FontFamily="Source Code Pro" IsReadOnly="True" TextOptions.TextFormattingMode="Display" TextOptions.TextHintingMode="Fixed" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Block.LineHeight="6"/>
+        <Label Content="Progress" HorizontalAlignment="Left" Margin="10,0,0,32" Height="26" VerticalAlignment="Bottom"/>
+        <Button x:Name="btn_browse" Content="..." Margin="0,0,90,10" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="20" Click="btn_browse_Click"/>
     </Grid>
 </Window>
