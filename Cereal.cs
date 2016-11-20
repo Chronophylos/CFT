@@ -17,8 +17,7 @@ namespace __Cereal__ {
             this.stopBits = stopBits;
             this.parity = parity;
 
-            sp = new SerialPort()
-            {
+            this.sp = new SerialPort(){
                 PortName = portName,
                 BaudRate = baudrate,
                 DataBits = dataBits,
@@ -28,36 +27,36 @@ namespace __Cereal__ {
         }
 
         public Boolean Open() {
-            try { sp.Open(); }
-            catch(UnauthorizedAccessException){ return false; }
-            catch (ArgumentOutOfRangeException){ return false; }
-            catch (ArgumentException){ return false; }
-            catch (InvalidOperationException){ return false; }
+            try { this.sp.Open(); }
+            catch(UnauthorizedAccessException)  { return false; }
+            catch(ArgumentOutOfRangeException)  { return false; }
+            catch(ArgumentException)            { return false; }
+            catch(InvalidOperationException)    { return false; }
             return true;
         }       
-        public void Close(){ sp.Close(); }
+        public void Close(){ this.sp.Close(); }
         
-        public Int32 DataAvailable(){ return sp.BytesToRead; } // Anzahl Zeichen, die im Empfangspuffer stehen
+        public Int32 DataAvailable(){ return this.sp.BytesToRead; } // Anzahl Zeichen, die im Empfangspuffer stehen
         
-        public Int32 Read(){ return sp.ReadByte(); }        
-        public Int32 Read(Byte[] buffer, Int32 bufSize){ return sp.Read(buffer, 0, bufSize); }
-        public String ReadLine(){ return sp.ReadLine(); }
+        public Int32 Read()                             { return this.sp.ReadByte(); }        
+        public Int32 Read(Byte[] buffer, Int32 bufSize) { return this.sp.Read(buffer, 0, bufSize); }
+        public String ReadLine()                        { return this.sp.ReadLine(); }
         
         public void Write(Int32 value){
             //System.Byte[] b = new System.Byte[1];
             //b[0] = (byte)value;
             //sp.Write(b, 0, 1);
-            sp.Write(BitConverter.GetBytes(value), 0 , 1);
+            this.sp.Write(BitConverter.GetBytes(value), 0 , 1);
         }     
-        public void Write(Byte[] buffer, Int32 bytesToWrite){ sp.Write(buffer, 0, bytesToWrite); }
-        public void Write(String s){ sp.Write(s); }    
+        public void Write(Byte[] buffer, Int32 bytesToWrite){ this.sp.Write(buffer, 0, bytesToWrite); }
+        public void Write(String s)                         { this.sp.Write(s); }    
         
-        public void SetRTS(Boolean arg){ sp.RtsEnable = arg; }
-        public void SetDTR(Boolean arg){ sp.DtrEnable = arg; }        
-        public Boolean IsCTS(){ return sp.CtsHolding; }        
-        public Boolean IsDSR(){ return sp.DsrHolding; }
-        public Boolean IsDCD(){ return sp.CDHolding; }
-        public Boolean IsDTR(){ return sp.DtrEnable; }
-        public Boolean IsRTS(){ return sp.RtsEnable; }
+        public void SetRTS(Boolean arg){ this.sp.RtsEnable = arg; }
+        public void SetDTR(Boolean arg){ this.sp.DtrEnable = arg; }        
+        public Boolean IsCTS(){ return this.sp.CtsHolding; }        
+        public Boolean IsDSR(){ return this.sp.DsrHolding; }
+        public Boolean IsDCD(){ return this.sp.CDHolding; }
+        public Boolean IsDTR(){ return this.sp.DtrEnable; }
+        public Boolean IsRTS(){ return this.sp.RtsEnable; }
     }
 }

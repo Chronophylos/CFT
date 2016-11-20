@@ -27,14 +27,21 @@ namespace CerealFileTransfer {
         private Parity parity;
         private Cereal rs232;
 
+        private Boolean isConnectionOK;
+
         public MainWindow() {
             InitializeComponent();
+
             this.portName = "COM1";
             this.baudrate = 9600;
             this.dataBits = 8;
             this.stopBits = StopBits.One;
             this.parity = Parity.None;
-            this.rs232 = new Cereal(portName, baudrate, dataBits, stopBits, parity);
+            this.rs232 = new Cereal(this.portName,
+                                    this.baudrate,
+                                    this.dataBits,
+                                    this.stopBits,
+                                    this.parity);
         }
 
         // convert control and data to a package ready to send
@@ -50,44 +57,46 @@ namespace CerealFileTransfer {
                                     dataBytes, 0, 4);
 
             Byte[] package = new Byte[4 + 4 + dataSize];
-            package = controlBytes.Concat(dataSizeBytes.Concat(dataBytes).ToArray()).ToArray();
-            /*package = controlBytes;
-            package.AddRange(dataSizeBytes);
-            package.AddRange(dataBytes);*/
+            package = controlBytes.Concat(dataSizeBytes.Concat(dataBytes)
+                                                       .ToArray()).ToArray();
 
             return package;
         }
 
-        private void CFT_Loaded(Object sender, RoutedEventArgs e) {
+        Boolean OpenCerealPort() {
             /* open COM1
             Display a Error MessageBox when open() return false
                 OK to retry opening COM1
                 CANCEL to close the program
             */
-            //bool retryCOM1 = true;
-            //while (retryCOM1) {
             while(true) {
-                if(!rs232.Open()) {
-                    switch(MessageBox.Show("ERROR: Can't open " + portName + ".\n" +
-                                            "Maybe " + portName + " is in use or does not exist\n" +
-                                            "Retry opening " + portName + "?",
-                                            "Error opening " + portName,
+                if(!this.rs232.Open()) {
+                    switch(MessageBox.Show("ERROR: Can't open " + this.portName + ".\n" +
+                                            "Maybe " + this.portName + " is in use or does not exist\n" +
+                                            "Retry opening " + this.portName + "?",
+                                            "Error opening " + this.portName,
                                             MessageBoxButton.OKCancel,
                                             MessageBoxImage.Error,
                                             MessageBoxResult.OK)) {
                         case MessageBoxResult.OK:
                             break;
                         case MessageBoxResult.Cancel:
-                            return;
+                            return false;
+                        case MessageBoxResult.None:
+                            break;
+                        case MessageBoxResult.Yes:
+                            break;
+                        case MessageBoxResult.No:
+                            break;
                     }
                 } else { break; }
             }
-            rtb_Log.AppendText("[  OK  ] Port " + portName + " opened\n");
+            this.Rtb_Log.AppendText("[  OK  ] Port " + this.portName + " opened\n");
 
-            rs232.SetDTR(true); // we're ready to work
-            rtb_Log.AppendText("[ INFO ] Terminal ready\n");
+            this.rs232.SetDTR(true); // we're ready to work
+            this.Rtb_Log.AppendText("[ INFO ] Terminal ready\n");
             // are you ready too?
-            while(!rs232.IsDCD()) {
+            while(!this.rs232.IsDCD()) {
                 switch(MessageBox.Show("ERROR: Cannot connect with Partner\n" +
                                        "Maybe the cable is not connected correctly?",
                                        "Error connecting to Partner",
@@ -97,18 +106,24 @@ namespace CerealFileTransfer {
                     case MessageBoxResult.OK:
                         break;
                     case MessageBoxResult.Cancel:
-                        return;
+                        return false;
+                    default:
+                        break;
                 } // we're waiting
             }
-            rtb_Log.AppendText("[  OK  ] Partner ready\n");
-            // now it is the GUIs turn, we're done here
+            this.Rtb_Log.AppendText("[  OK  ] Partner ready\n");
+            return true;
         }
 
-        private void btn_browse_Click(Object sender, RoutedEventArgs e) {
-
+        private void CFT_Loaded(Object sender, RoutedEventArgs e) {
+            this.isConnectionOK = OpenCerealPort();
         }
 
-        private void btn_send_Click(Object sender, RoutedEventArgs e) {
+        private void Btn_browse_Click(Object sender, RoutedEventArgs e) {
+            
+        }
+
+        private void Btn_send_Click(Object sender, RoutedEventArgs e) {
 
         }
     }
