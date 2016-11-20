@@ -12,3 +12,5 @@ D:\_WORK\--Projects\CFT\obj\Debug\CerealFileTransfer.Properties.Resources.resour
 D:\_WORK\--Projects\CFT\obj\Debug\CerealFileTransfer.csproj.GenerateResource.Cache
 D:\_WORK\--Projects\CFT\obj\Debug\CerealFileTransfer.exe
 D:\_WORK\--Projects\CFT\obj\Debug\CerealFileTransfer.pdb
+D:\_WORK\--Projects\CFT\bin\Debug\CerealFileTransfer.exe.CodeAnalysisLog.xml
+D:\_WORK\--Projects\CFT\bin\Debug\CerealFileTransfer.exe.lastcodeanalysissucceeded

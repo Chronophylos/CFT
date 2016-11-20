@@ -1,9 +1,10 @@
-﻿using System;
+﻿using __Cereal__;
+using System;
+using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
-using __Cereal__;
 
 namespace CerealFileTransfer {
     /// <summary>
@@ -18,6 +19,8 @@ namespace CerealFileTransfer {
         private Cereal rs232;
 
         private Boolean isConnectionOK;
+
+        private List<String> fileNames;
 
         public MainWindow() {
             InitializeComponent();
@@ -111,7 +114,7 @@ namespace CerealFileTransfer {
 
         private void Btn_browse_Click(Object sender, RoutedEventArgs e) {
             OpenFileDialog fileDialog = new OpenFileDialog() {
-                Multiselect = false
+                Multiselect = true
             };
             switch(fileDialog.ShowDialog()) {
                 case System.Windows.Forms.DialogResult.OK:
@@ -119,11 +122,18 @@ namespace CerealFileTransfer {
                 default:
                     return;
             }
-            this.Txb_path.Text = fileDialog.FileName;
+            this.Txb_path.Text = String.Join(";", fileDialog.FileNames);
+            this.fileNames = fileDialog.FileNames.ToList();
         }
 
         private void Btn_send_Click(Object sender, RoutedEventArgs e) {
-
+            // checkPath
+            this.fileNames.Concat(this.Txb_path.Text.Split(new Char[] { ';' }).ToList());
+            foreach(String file in this.fileNames) {
+                if(!System.IO.File.Exists(file)) { this.fileNames.Remove(file); }
+            }
+            this.rs232.SetRTS(true);
+            while(this.rs232.IsCTS());
         }
     }
 }
