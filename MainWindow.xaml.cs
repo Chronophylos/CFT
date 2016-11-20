@@ -1,18 +1,8 @@
 ﻿using System;
 using System.IO.Ports;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Forms;
 using __Cereal__;
 
 namespace CerealFileTransfer {
@@ -71,7 +61,7 @@ namespace CerealFileTransfer {
             */
             while(true) {
                 if(!this.rs232.Open()) {
-                    switch(MessageBox.Show("ERROR: Can't open " + this.portName + ".\n" +
+                    switch(System.Windows.MessageBox.Show("ERROR: Can't open " + this.portName + ".\n" +
                                             "Maybe " + this.portName + " is in use or does not exist\n" +
                                             "Retry opening " + this.portName + "?",
                                             "Error opening " + this.portName,
@@ -97,7 +87,7 @@ namespace CerealFileTransfer {
             this.Rtb_Log.AppendText("[ INFO ] Terminal ready\n");
             // are you ready too?
             while(!this.rs232.IsDCD()) {
-                switch(MessageBox.Show("ERROR: Cannot connect with Partner\n" +
+                switch(System.Windows.MessageBox.Show("ERROR: Cannot connect with Partner\n" +
                                        "Maybe the cable is not connected correctly?",
                                        "Error connecting to Partner",
                                        MessageBoxButton.OKCancel,
@@ -120,7 +110,16 @@ namespace CerealFileTransfer {
         }
 
         private void Btn_browse_Click(Object sender, RoutedEventArgs e) {
-            
+            OpenFileDialog fileDialog = new OpenFileDialog() {
+                Multiselect = false
+            };
+            switch(fileDialog.ShowDialog()) {
+                case System.Windows.Forms.DialogResult.OK:
+                    break;
+                default:
+                    return;
+            }
+            this.Txb_path.Text = fileDialog.FileName;
         }
 
         private void Btn_send_Click(Object sender, RoutedEventArgs e) {

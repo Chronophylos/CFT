@@ -27,7 +27,7 @@ namespace __Cereal__ {
         }
 
         public Boolean Open() {
-            try { this.sp.Open(); }
+            try{ this.sp.Open(); }
             catch(UnauthorizedAccessException)  { return false; }
             catch(ArgumentOutOfRangeException)  { return false; }
             catch(ArgumentException)            { return false; }
