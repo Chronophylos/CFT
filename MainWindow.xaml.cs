@@ -52,7 +52,6 @@ namespace CerealFileTransfer {
             Byte[] package = new Byte[4 + 4 + dataSize];
             package = controlBytes.Concat(dataSizeBytes.Concat(dataBytes)
                                                        .ToArray()).ToArray();
-
             return package;
         }
 
@@ -119,20 +118,28 @@ namespace CerealFileTransfer {
         }
 
         private void Btn_send_Click(Object sender, RoutedEventArgs e) {
+            this.Btn_send.IsEnabled = false;
             // checkPath
-            if (this.Txb_path.Text == null){ return; }
+            if (this.Txb_path.Text == null) { return; }
+
             this.fileNames.Concat(this.Txb_path.Text.Split(new Char[] { ';' }).ToList());
-            foreach(String file in this.fileNames) {
-                if(!System.IO.File.Exists(file)) { this.fileNames.Remove(file); }
+            foreach (String file in this.fileNames) {
+                if (!System.IO.File.Exists(file)) { this.fileNames.Remove(file); }
             }
 
             this.rs232.SetRTS(true);
-            while(this.rs232.IsCTS());
+            while (this.rs232.IsCTS()) ;
             this.Rtb_Log.AppendText("[  OK  ] Partner is clear to send\n");
 
-            // send info package
+            foreach (String file in this.fileNames) {
+                // make info package
+                Byte[] infopackage = this.StringToPackage("INFO", "FileName:" + file);
+                // send info package
 
-            // send data package
+
+                // send data package
+            }
+            this.Btn_send.IsEnabled = true;
         }
     }
 }
