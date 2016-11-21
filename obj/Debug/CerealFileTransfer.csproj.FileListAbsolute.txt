@@ -46,3 +46,6 @@ C:\Users\kbruchha\Source\Repos\CFT\obj\Debug\MainWindow.baml
 C:\Users\kbruchha\Source\Repos\CFT\obj\Debug\CerealFileTransfer.g.resources
 C:\Users\kbruchha\Source\Repos\CFT\obj\Debug\CerealFileTransfer.Properties.Resources.resources
 C:\Users\kbruchha\Source\Repos\CFT\obj\Debug\CerealFileTransfer.csproj.GenerateResource.Cache
+C:\Users\jcavaler\Source\Repos\CFT\bin\Debug\CerealFileTransfer.exe.config
+C:\Users\jcavaler\Source\Repos\CFT\obj\Debug\CerealFileTransfer.exe
+C:\Users\jcavaler\Source\Repos\CFT\obj\Debug\CerealFileTransfer.pdb
