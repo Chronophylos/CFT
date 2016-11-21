@@ -71,15 +71,9 @@ namespace CerealFileTransfer {
                                             MessageBoxButton.OKCancel,
                                             MessageBoxImage.Error,
                                             MessageBoxResult.OK)) {
-                        case MessageBoxResult.OK:
-                            break;
                         case MessageBoxResult.Cancel:
                             return false;
-                        case MessageBoxResult.None:
-                            break;
-                        case MessageBoxResult.Yes:
-                            break;
-                        case MessageBoxResult.No:
+                        default:
                             break;
                     }
                 } else { break; }
@@ -96,8 +90,6 @@ namespace CerealFileTransfer {
                                        MessageBoxButton.OKCancel,
                                        MessageBoxImage.Error,
                                        MessageBoxResult.OK)) {
-                    case MessageBoxResult.OK:
-                        break;
                     case MessageBoxResult.Cancel:
                         return false;
                     default:
@@ -133,8 +125,14 @@ namespace CerealFileTransfer {
             foreach(String file in this.fileNames) {
                 if(!System.IO.File.Exists(file)) { this.fileNames.Remove(file); }
             }
+
             this.rs232.SetRTS(true);
             while(this.rs232.IsCTS());
+            this.Rtb_Log.AppendText("[  OK  ] Partner is clear to send\n");
+
+            // send info package
+
+            // send data package
         }
     }
 }
