@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-D:\_WORK\--Projects\CFT\obj\Debug\
+C:\Users\jcavaler\Source\Repos\CFT\obj\Debug\
 CerealFileTransfer
 none
 false
 CODE_ANALYSIS;DEBUG;TRACE
-D:\_WORK\--Projects\CFT\App.xaml
+C:\Users\jcavaler\Source\Repos\CFT\App.xaml
 11151548125
 
-102003544670
+105422499
 14-1787462521
 MainWindow.xaml;
 
-False
+True
 
