@@ -14,6 +14,6 @@
         <RichTextBox x:Name="Rtb_Log" Margin="10,10,10,58" FontFamily="Source Code Pro" IsReadOnly="True" TextOptions.TextFormattingMode="Display" TextOptions.TextHintingMode="Fixed" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Block.LineHeight="6"/>
         <Label Content="Progress" HorizontalAlignment="Left" Margin="10,0,0,32" Height="26" VerticalAlignment="Bottom"/>
         <Button x:Name="Btn_browse" Content="..." Margin="0,0,90,10" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="20" Click="Btn_browse_Click"/>
-        <Label x:Name="label" Content="00:00" Margin="0,0,10,35" HorizontalAlignment="Right" Width="75" Height="23" VerticalAlignment="Bottom"/>
+        <Label x:Name="Lbl_time" Content="00:00" Margin="0,0,10,35" HorizontalAlignment="Right" Width="75" Height="23" VerticalAlignment="Bottom"/>
     </Grid>
 </Window>
