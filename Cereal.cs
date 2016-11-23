@@ -8,21 +8,25 @@ namespace __Cereal__ {
         private Int32 dataBits;
         private StopBits stopBits; // Der Anzahl der Stoppbits (Stopbits.One, StopBits.OnePointFive, StopBits.Two)
         private Parity parity; // Festlegung der Parität (Parity.Even, Parity.Mark, Parity.None, Parity.Odd, Parity.Space)
+        private Int32 bufferSize;
         private SerialPort sp;
         
-        public Cereal(String portName, Int32 baudrate, Int32 dataBits, StopBits stopBits, Parity parity) {
+        public Cereal(String portName, Int32 baudrate, Int32 dataBits, StopBits stopBits, Parity parity, Int32 bufferSize) {
             this.portName = portName;
             this.baudrate = baudrate;
             this.dataBits = dataBits;
             this.stopBits = stopBits;
             this.parity = parity;
+            this.bufferSize = bufferSize;
 
             this.sp = new SerialPort(){
                 PortName = portName,
                 BaudRate = baudrate,
                 DataBits = dataBits,
                 StopBits = stopBits,
-                Parity = parity
+                Parity = parity,
+                ReadBufferSize = bufferSize,
+                WriteBufferSize = bufferSize / 2
             };
         }
 
