@@ -15,5 +15,6 @@
         <Label Content="Progress" HorizontalAlignment="Left" Margin="10,0,0,32" Height="26" VerticalAlignment="Bottom"/>
         <Button x:Name="Btn_browse" Content="..." Margin="0,0,90,10" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="20" Click="Btn_browse_Click"/>
         <Label x:Name="label" Content="00:00" Margin="0,0,10,35" HorizontalAlignment="Right" Width="75" Height="23" VerticalAlignment="Bottom"/>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="100" Margin="666,-242,-90,0" VerticalAlignment="Top" Width="100"/>
     </Grid>
 </Window>
