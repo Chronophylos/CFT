@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CerealFileTransfer"
         xmlns:Properties="clr-namespace:CerealFileTransfer.Properties" x:Name="CFT" x:Class="CerealFileTransfer.MainWindow"
         mc:Ignorable="d"
-        Title="Cereal File Transfer" Height="401.667" Width="683.667" Topmost="True" Loaded="CFT_Loaded" Icon="Icon.ico">
+        Title="Cereal File Transfer" Height="401.667" Width="683.667" Loaded="CFT_Loaded" Icon="Icon.ico">
     <Grid>
         <ProgressBar x:Name="Pb_progress" Margin="71,0,90,35" Height="16" VerticalAlignment="Bottom"/>
         <Button x:Name="Btn_send" Content="Send" Margin="0,0,10,10" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75" Click="Btn_send_Click"/>
