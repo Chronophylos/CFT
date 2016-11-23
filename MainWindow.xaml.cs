@@ -119,9 +119,11 @@ namespace CerealFileTransfer {
 
         private void Btn_send_Click(Object sender, RoutedEventArgs e) {
             this.Btn_send.IsEnabled = false;
-            // checkPath
+            
+            // checkPath not null
             if (this.Txb_path.Text == null) { return; }
 
+            // checkPath
             this.fileNames.Concat(this.Txb_path.Text.Split(new Char[] { ';' }).ToList());
             foreach (String file in this.fileNames) {
                 if (!System.IO.File.Exists(file)) { this.fileNames.Remove(file); }
