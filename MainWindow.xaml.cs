@@ -7,6 +7,7 @@ using System.IO.Ports;
 using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
+using System.Windows.Threading;
 
 namespace CerealFileTransfer {
     /// <summary>
@@ -20,6 +21,7 @@ namespace CerealFileTransfer {
         private Parity parity;
         private Int32 bufferSize;
         private Cereal rs232;
+        //private DispatcherTimer Timer;
 
         private Boolean isConnectionOK;
 
@@ -176,5 +178,27 @@ namespace CerealFileTransfer {
             }
             this.Btn_send.IsEnabled = true; // enable buttton
         }
+        
+        private void StartPB(Int32 Filesize, Int32 PackageCounter)
+        {
+            Int32 StartTime = (Filesize * 8) * (1 / this.baudrate);
+            Pb_progress.Value = (Filesize / (MAX_PACKAGE_SIZE * PackageCounter))*100;
+            Int32 CurrentEstTime = (Int32)(StartTime * (Pb_progress.Value / 100));
+        }
+
+        private void ResetPB()
+        {
+            Pb_progress.Value = 0;
+        }
+
+       /* private void TimerTick()
+        {
+
+        }
+
+        private void TimerStop()
+        {
+
+        }*/
     }
 }
