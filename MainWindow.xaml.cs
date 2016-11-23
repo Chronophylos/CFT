@@ -173,9 +173,6 @@ namespace CerealFileTransfer {
                         fs.Close();
                     }
                 } catch (System.UnauthorizedAccessException ex) { Debug.Print(ex.Message); }
-
-
-
             }
             this.Btn_send.IsEnabled = true; // enable buttton
         }
