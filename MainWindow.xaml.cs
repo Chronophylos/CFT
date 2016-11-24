@@ -70,21 +70,23 @@ namespace CerealFileTransfer {
                 OK to retry opening COM1
                 CANCEL to close the program
             */
-            while(true) {
-                if(!this.rs232.Open()) {
+            Boolean isOpen = false;
+            while(!isOpen) {
+                if(!this.rs232.Open()){
                     switch(System.Windows.MessageBox.Show("ERROR: Can't open " + this.portName + ".\n" +
-                                            "Maybe " + this.portName + " is in use or does not exist\n" +
-                                            "Retry opening " + this.portName + "?",
-                                            "Error opening " + this.portName,
-                                            MessageBoxButton.OKCancel,
-                                            MessageBoxImage.Error,
-                                            MessageBoxResult.OK)) {
+                                                          "Maybe " + this.portName + " is in use or does not exist\n" +
+                                                          "Retry opening " + this.portName + "?",
+                                                          "Error opening " + this.portName,
+                                                          MessageBoxButton.OKCancel,
+                                                          MessageBoxImage.Error,
+                                                          MessageBoxResult.OK)) {
                         case MessageBoxResult.Cancel:
                             return false;
                         default:
+                            isOpen = true;
                             break;
                     }
-                } else { break; }
+                } else { isOpen = true; }
             }
             this.Rtb_Log.AppendText("[  OK  ] Port " + this.portName + " opened\n");
 
@@ -93,11 +95,11 @@ namespace CerealFileTransfer {
             // are you ready too?
             while(!this.rs232.IsDCD()) {
                 switch(System.Windows.MessageBox.Show("ERROR: Cannot connect with Partner\n" +
-                                       "Maybe the cable is not connected correctly?",
-                                       "Error connecting to Partner",
-                                       MessageBoxButton.OKCancel,
-                                       MessageBoxImage.Error,
-                                       MessageBoxResult.OK)) {
+                                                      "Maybe the cable is not connected correctly?",
+                                                      "Error connecting to Partner",
+                                                      MessageBoxButton.OKCancel,
+                                                      MessageBoxImage.Error,
+                                                      MessageBoxResult.OK)) {
                     case MessageBoxResult.Cancel:
                         return false;
                     default:
@@ -109,7 +111,8 @@ namespace CerealFileTransfer {
         }
 
         private void CFT_Loaded(Object sender, RoutedEventArgs e) {
-            this.isConnectionOK = OpenCerealPort();
+            try { this.isConnectionOK = OpenCerealPort(); }
+            catch (Exception ex) { Debug.Print(ex.Message); }
         }
 
         private void Btn_browse_Click(Object sender, RoutedEventArgs e) {
@@ -128,9 +131,24 @@ namespace CerealFileTransfer {
 
         private void Btn_send_Click(Object sender, RoutedEventArgs e) {
             this.Btn_send.IsEnabled = false; // disable button
-            
+
+            // check isConnectionOK
+            if (!isConnectionOK) {
+                System.Windows.MessageBox.Show("ERROR: no Connection\n" +
+                                                      "Maybe the cable is not connected correctly?",
+                                                      "Error connecting to Partner",
+                                                      MessageBoxButton.OKCancel,
+                                                      MessageBoxImage.Error,
+                                                      MessageBoxResult.OK);
+                this.Btn_send.IsEnabled = true;
+                return;
+            }
+
             // checkPath not null
-            if (this.Txb_path.Text == null) { return; }
+            if (this.Txb_path.Text == "") {
+                this.Btn_send.IsEnabled = true;
+                return;
+            }
 
             // check if path exist
             this.fileNames.Concat(this.Txb_path.Text.Split(new Char[] { ';' }).ToList());
@@ -148,12 +166,18 @@ namespace CerealFileTransfer {
                 Int32 packageNumber = fileSize / MAX_PACKAGE_SIZE;
                 if (fileSize % MAX_PACKAGE_SIZE > 0) { packageNumber++; }
 
+                this.Rtb_Log.AppendText("[ INFO ] Send " + file + " (" + fileSize + "Byte) in " + Convert.ToString(packageNumber) + " Packages");
+
+                this.Rtb_Log.AppendText("[  OK  ] Send INFO Package");
+
                 // make info package
                 Byte[] infopackage = this.StringToPackage("INFO", "PackageNumber:" + Convert.ToString(packageNumber) + "\n" +
                                                                   "FileName:" + file + "\n");
                 // send info package
-                rs232.Write(infopackage, infopackage.Count());
+                this.rs232.Write(infopackage, infopackage.Count());
                 //StartProgressbar(infopackage.Count());
+
+                this.Rtb_Log.AppendText("[  OK  ] Send DATA Packages");
 
                 // send packages
                 try {
@@ -179,16 +203,14 @@ namespace CerealFileTransfer {
             this.Btn_send.IsEnabled = true; // enable buttton
         }
         
-        private void StartPB(Int32 Filesize, Int32 PackageCounter)
-        {
+        private void StartPB(Int32 Filesize, Int32 PackageCounter){
             Int32 StartTime = (Filesize * 8) * (1 / this.baudrate);
-            Pb_progress.Value = (Filesize / (MAX_PACKAGE_SIZE * PackageCounter))*100;
-            Int32 CurrentEstTime = (Int32)(StartTime * (Pb_progress.Value / 100));
+            this.Pb_progress.Value = (Filesize / (MAX_PACKAGE_SIZE * PackageCounter))*100;
+            Int32 CurrentEstTime = (Int32)(StartTime * (this.Pb_progress.Value / 100));
         }
 
-        private void ResetPB()
-        {
-            Pb_progress.Value = 0;
+        private void ResetPB(){
+            this.Pb_progress.Value = 0;
         }
 
        /* private void TimerTick()
