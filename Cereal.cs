@@ -32,12 +32,6 @@ namespace __Cereal__ {
         }
 
         public Boolean Open() {
-            /*try{ this.sp.Open(); }
-            catch(UnauthorizedAccessException)  { return false; }
-            catch(ArgumentOutOfRangeException)  { return false; }
-            catch(ArgumentException)            { return false; }
-            catch(InvalidOperationException)    { return false; }
-            return true;*/
             try { this.sp.Open(); }
             catch(Exception ex) { Debug.Print(ex.Message); return false; }
             return true;
