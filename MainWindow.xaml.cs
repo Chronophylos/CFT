@@ -27,17 +27,17 @@ namespace CerealFileTransfer {
 
         private List<String> fileNames;
 
-        private const Int16 MAX_PACKAGE_SIZE = Int16.MaxValue - 4 - 4;
+        private const Int16 MAX_PACKAGE_SIZE = 4096 - 4 - 4; //Int16.MaxValue - 4 - 4;
 
         public MainWindow() {
             InitializeComponent();
-
-            this.portName = "COM1";
+            Debug.WriteLine("Aviable Serial Ports: '" + String.Join("', '", SerialPort.GetPortNames()) + "'");
+            this.portName = SerialPort.GetPortNames()[0];
             this.baudrate = 9600;
             this.dataBits = 8;
             this.stopBits = StopBits.One;
             this.parity = Parity.None;
-            this.bufferSize = 65535;
+            this.bufferSize = MAX_PACKAGE_SIZE;
             this.rs232 = new Cereal(this.portName,
                                     this.baudrate,
                                     this.dataBits,
@@ -73,6 +73,7 @@ namespace CerealFileTransfer {
             Boolean isOpen = false;
             while(!isOpen) {
                 if(!this.rs232.Open()){
+                    Debug.Write("Can't open SerialPort");
                     switch(System.Windows.MessageBox.Show("ERROR: Can't open " + this.portName + ".\n" +
                                                           "Maybe " + this.portName + " is in use or does not exist\n" +
                                                           "Retry opening " + this.portName + "?",
@@ -83,10 +84,13 @@ namespace CerealFileTransfer {
                         case MessageBoxResult.Cancel:
                             return false;
                         default:
-                            isOpen = true;
+                            //isOpen = true;
                             break;
                     }
-                } else { isOpen = true; }
+                } else {
+                    Debug.Write("SerialPort opened");
+                    isOpen = true;
+                }
             }
             this.Rtb_Log.AppendText("[  OK  ] Port " + this.portName + " opened\n");
 
@@ -106,6 +110,7 @@ namespace CerealFileTransfer {
                         break;
                 } // we're waiting
             }
+            this.isConnectionOK = true;
             this.Rtb_Log.AppendText("[  OK  ] Partner ready\n");
             return true;
         }
@@ -134,12 +139,19 @@ namespace CerealFileTransfer {
 
             // check isConnectionOK
             if (!isConnectionOK) {
-                System.Windows.MessageBox.Show("ERROR: no Connection\n" +
-                                                      "Maybe the cable is not connected correctly?",
+                switch (System.Windows.MessageBox.Show("ERROR: No Connection\n" +
+                                                      "Maybe the cable is not connected correctly?\n" +
+                                                      "Try restarting the Program",
                                                       "Error connecting to Partner",
                                                       MessageBoxButton.OKCancel,
                                                       MessageBoxImage.Error,
-                                                      MessageBoxResult.OK);
+                                                      MessageBoxResult.OK)) {
+                    case MessageBoxResult.Cancel:
+                        break;
+                    default:
+                        this.Close();
+                        break;
+                }
                 this.Btn_send.IsEnabled = true;
                 return;
             }
@@ -151,9 +163,14 @@ namespace CerealFileTransfer {
             }
 
             // check if path exist
-            this.fileNames.Concat(this.Txb_path.Text.Split(new Char[] { ';' }).ToList());
-            foreach (String file in this.fileNames) {
-                if (!System.IO.File.Exists(file)) { this.fileNames.Remove(file); } // if path doesn't exit remove it
+            try {
+                this.fileNames.Concat(this.Txb_path.Text.Split(new Char[] { ';' }).ToList());
+                foreach (String file in this.fileNames) {
+                    if (!System.IO.File.Exists(file)) { this.fileNames.Remove(file); } // if path doesn't exit remove it
+                }
+            } catch (ArgumentNullException ex) {
+                Debug.Print(ex.Message);
+                return;
             }
             // are you ready for tranfer?
             this.rs232.SetRTS(true);
