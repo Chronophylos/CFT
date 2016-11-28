@@ -115,6 +115,26 @@ namespace CerealFileTransfer {
             return true;
         }
 
+        private Boolean ConnectToPort() {
+            if (!isConnectionOK) { return true; }
+
+            while (!this.rs232.IsDCD()) {
+                switch (System.Windows.MessageBox.Show("ERROR: Cannot connect with Partner\n" +
+                                                      "Maybe the cable is not connected correctly?",
+                                                      "Error connecting to Partner",
+                                                      MessageBoxButton.OKCancel,
+                                                      MessageBoxImage.Error,
+                                                      MessageBoxResult.OK)) {
+                    case MessageBoxResult.Cancel:
+                        return false;
+                    default:
+                        break;
+                }
+            }
+            isConnectionOK = true;
+            return true;
+        }
+
         private void CFT_Loaded(Object sender, RoutedEventArgs e) {
             try { this.isConnectionOK = OpenCerealPort(); }
             catch (Exception ex) { Debug.Print(ex.Message); }
@@ -139,21 +159,10 @@ namespace CerealFileTransfer {
 
             // check isConnectionOK
             if (!isConnectionOK) {
-                switch (System.Windows.MessageBox.Show("ERROR: No Connection\n" +
-                                                      "Maybe the cable is not connected correctly?\n" +
-                                                      "Try restarting the Program",
-                                                      "Error connecting to Partner",
-                                                      MessageBoxButton.OKCancel,
-                                                      MessageBoxImage.Error,
-                                                      MessageBoxResult.OK)) {
-                    case MessageBoxResult.Cancel:
-                        break;
-                    default:
-                        this.Close();
-                        break;
-                }
-                this.Btn_send.IsEnabled = true;
-                return;
+                if (!ConnectToPort()) {
+                    this.Btn_send.IsEnabled = true;
+                    return;
+                };                
             }
 
             // checkPath not null
@@ -172,6 +181,7 @@ namespace CerealFileTransfer {
                 Debug.Print(ex.Message);
                 return;
             }
+
             // are you ready for tranfer?
             this.rs232.SetRTS(true);
             while (this.rs232.IsCTS()); 
