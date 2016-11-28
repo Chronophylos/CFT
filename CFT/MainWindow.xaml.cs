@@ -92,6 +92,7 @@ namespace CerealFileTransfer {
                     isOpen = true;
                 }
             }
+            this.Rtb_Log.AppendText("Autoren: Nikolai Zimmermann, Kevin Bruchhaeuser, Christopher Gunst und Julian Cavaleri\n");
             this.Rtb_Log.AppendText("[  OK  ] Port " + this.portName + " opened\n");
 
             this.rs232.SetDTR(true); // we're ready to work
