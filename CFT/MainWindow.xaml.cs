@@ -232,22 +232,16 @@ namespace CerealFileTransfer {
         
         private void StartPB(Int32 Filesize, Int32 PackageCounter){
             Int32 StartTime = (Filesize * 8) * (1 / this.baudrate);
-            this.Pb_progress.Value = (Filesize / (MAX_PACKAGE_SIZE * PackageCounter))*100;
-            Int32 CurrentEstTime = (Int32)(StartTime * (this.Pb_progress.Value / 100));
+            this.Pb_progress.Value = ( 1 / (Filesize / (MAX_PACKAGE_SIZE * PackageCounter) ) ) * 100;
+            Int32 CurrentEstTime = (Int32)(StartTime * (this.Pb_progress.Value / 100 ) );
+            if (this.Pb_progress.Value > 99)
+            {
+                ResetPB();
+            }
         }
 
         private void ResetPB(){
             this.Pb_progress.Value = 0;
         }
-
-       /* private void TimerTick()
-        {
-
-        }
-
-        private void TimerStop()
-        {
-
-        }*/
     }
 }
