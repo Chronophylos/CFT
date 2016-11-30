@@ -13,12 +13,14 @@ namespace CerealFileTransfer {
         private const Int32 packageSize = 4096 * 2;
         private const Int32 bufferSize = 4096;
         private Network network;
+        private File file;
         private System.Threading.Timer timer;
         private String fileName;
 
         public MainWindow() {
             InitializeComponent();
             network = new Network(baudrate, bufferSize, packageSize);
+            file = new File("%USERPROFILE%\\Desktop", packageSize);
             timer = new System.Threading.Timer(timer_tick, null, 0, 500);
         }
 
@@ -37,7 +39,7 @@ namespace CerealFileTransfer {
             }
             Byte[][] datapackage = new Byte[packages][];
             datapackage = network.GetPackage(packages);
-            // datapackage to file
+            file.Write(fileName, datapackage);
         }
 
         private void Btn_browse_Click(Object sender, RoutedEventArgs e) {

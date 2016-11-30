@@ -6,7 +6,7 @@ namespace CerealFileTransfer {
         private String workingDirectory;
         private Int32 packageSize;
 
-        File(String workingDirectory, Int32 packageSize) {
+        public File(String workingDirectory, Int32 packageSize) {
             this.workingDirectory = workingDirectory;
             this.packageSize = packageSize;
         }
