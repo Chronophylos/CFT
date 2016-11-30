@@ -37,7 +37,7 @@ namespace CerealFileTransfer {
             }
             Byte[][] datapackage = new Byte[packages][];
             datapackage = network.GetPackage(packages);
-            // datapackages to file
+            // datapackage to file
         }
 
         private void Btn_browse_Click(Object sender, RoutedEventArgs e) {
