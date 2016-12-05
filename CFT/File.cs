@@ -23,7 +23,18 @@ namespace CerealFileTransfer {
                 fileStream.Read(buffer, 0, 1);
                 package[i] = buffer;
             }
+
             return package;
+        }
+
+        public Int32 getPackages(String fileName) {
+            FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+            FileInfo fileInfo = new FileInfo(fileName);
+            Int32 packages = new Int32();
+            packages = Convert.ToInt32(fileInfo.Length / this.packageSize);
+            if (fileInfo.Length % this.packageSize != 0) { packages++; }
+
+            return packages;
         }
 
         public void Write(String fileName, Byte[][] package) {

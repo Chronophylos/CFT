@@ -25,6 +25,7 @@ namespace CerealFileTransfer {
         }
 
         private void timer_tick(Object o) {
+            if (!network.isDataAvailable()){ return; }
             Byte[][] headerpackage = new Byte[1][];
             headerpackage = network.GetPackage(1);
             List <String> header = Convert.ToString(headerpackage[1]).Split(':').ToList();
@@ -50,9 +51,10 @@ namespace CerealFileTransfer {
         }
 
         private void Btn_send_Click(Object sender, RoutedEventArgs e) {
-            // read file
-            // calc number of packages
-            // send file
+            Byte[][] package = new Byte[file.getPackages(this.fileName)][];
+            package = file.Read(this.fileName);
+
+            network.SendPackage(package);
         }
     }
 }
