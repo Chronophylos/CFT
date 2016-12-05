@@ -25,7 +25,7 @@ namespace CerealFileTransfer {
         }
 
         private void timer_tick(Object o) {
-            if (!network.isDataAvailable()){ return; }
+            if (!network.isDataAvailable()) return;
             Byte[][] headerpackage = new Byte[1][];
             headerpackage = network.GetPackage(1);
             List <String> header = Convert.ToString(headerpackage[1]).Split(':').ToList();
