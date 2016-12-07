@@ -29,7 +29,7 @@ namespace CerealFileTransfer {
             if (!network.isDataAvailable()) return;
             Byte[][] headerpackage = new Byte[1][];
             headerpackage = network.GetPackage(1);
-            List <String> header = Convert.ToString(headerpackage[0]).Split(':').ToList();
+            String[] header = Convert.ToString(headerpackage[0]).Split(':').ToArray();
             String filename = header[0];
             String filesize = header[1];
             Int32 packages = Convert.ToInt32(header[3]);
