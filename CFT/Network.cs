@@ -48,6 +48,9 @@ namespace CerealFileTransfer {
             Byte[] buffer = new Byte[this.packageSize];
 
             for (int i = 0; i < count; i++) {
+                while (this.serial.BytesToRead < this.packageSize) {
+                    Debug.Print(Convert.ToString(this.serial.BytesToRead) + "/" + Convert.ToString(this.packageSize));
+                }
                 this.serial.Read(buffer, 0, 1);
                 package[i] = buffer;
             }
@@ -57,7 +60,7 @@ namespace CerealFileTransfer {
 
         public void SendPackage(Byte[][] package) {
             for (int i = 0; i < package.Length; i++) {
-                this.serial.Write(package[i], 0, 1);
+                this.serial.Write(package[i], 0, this.packageSize);
             }
         }
  

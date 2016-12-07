@@ -56,6 +56,7 @@ namespace CerealFileTransfer {
             headerpackage[0] = Encoding.UTF8.GetBytes(this.fileName + ":" + "???B" + ":" + Convert.ToString(file.getPackages(this.fileName)));
             Byte[][] package = new Byte[file.getPackages(this.fileName)][];
             package = file.Read(this.fileName);
+            network.SendPackage(headerpackage);
             network.SendPackage(package);
         }
 
