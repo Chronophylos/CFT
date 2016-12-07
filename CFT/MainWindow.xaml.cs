@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Windows;
 
 namespace CerealFileTransfer {
@@ -28,7 +29,7 @@ namespace CerealFileTransfer {
             if (!network.isDataAvailable()) return;
             Byte[][] headerpackage = new Byte[1][];
             headerpackage = network.GetPackage(1);
-            List <String> header = Convert.ToString(headerpackage[1]).Split(':').ToList();
+            List <String> header = Convert.ToString(headerpackage[0]).Split(':').ToList();
             String filename = header[0];
             String filesize = header[1];
             Int32 packages = Convert.ToInt32(header[3]);
@@ -51,9 +52,10 @@ namespace CerealFileTransfer {
         }
 
         private void Btn_send_Click(Object sender, RoutedEventArgs e) {
+            Byte[][] headerpackage = new Byte[1][];
+            headerpackage[0] = Encoding.UTF8.GetBytes(this.fileName + ":" + "???B" + ":" + Convert.ToString(file.getPackages(this.fileName)));
             Byte[][] package = new Byte[file.getPackages(this.fileName)][];
             package = file.Read(this.fileName);
-
             network.SendPackage(package);
         }
 
