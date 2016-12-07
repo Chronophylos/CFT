@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO.Ports;
 using System.Threading;
 
@@ -52,6 +53,17 @@ namespace CerealFileTransfer {
 
         public void SendPackage(Byte[][] package) { for (int i = 0; i < package.Length; i++) this.serial.Write(package[i], 0, 1); }
  
-        public Boolean isDataAvailable() { if (this.serial.BytesToRead > 0) { return true; } else { return false; } }
+        public Boolean isDataAvailable() {
+            try {
+                if (this.serial.BytesToRead > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (InvalidOperationException ex) {
+                Debug.Print(ex.Message);
+            }
+            return false;
+        }
     }
 }
