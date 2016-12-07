@@ -13,8 +13,6 @@ namespace CerealFileTransfer {
         private Int32 bufferSize;
         private Int32 packageSize;
         private SerialPort serial;
-        private Boolean isReceaving;
-        private Thread receieveThread;
 
         public Network(Int32 baudrate, Int32 bufferSize, Int32 packageSize) {
             this.portName = SerialPort.GetPortNames()[0];
@@ -37,7 +35,13 @@ namespace CerealFileTransfer {
             };
         }
 
-        public void Open() { try { this.serial.Open(); } catch (Exception ex) { throw ex; } }
+        public void Open() {
+            try {
+                this.serial.Open();
+            } catch (Exception ex) {
+                Debug.Print(ex.Message);
+            }
+        }
 
         public Byte[][] GetPackage(Int32 count) {
             Byte[][] package = new Byte[count][];
@@ -51,7 +55,11 @@ namespace CerealFileTransfer {
             return package;
         }
 
-        public void SendPackage(Byte[][] package) { for (int i = 0; i < package.Length; i++) this.serial.Write(package[i], 0, 1); }
+        public void SendPackage(Byte[][] package) {
+            for (int i = 0; i < package.Length; i++) {
+                this.serial.Write(package[i], 0, 1);
+            }
+        }
  
         public Boolean isDataAvailable() {
             try {
@@ -63,6 +71,7 @@ namespace CerealFileTransfer {
             } catch (InvalidOperationException ex) {
                 Debug.Print(ex.Message);
             }
+
             return false;
         }
     }

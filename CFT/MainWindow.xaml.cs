@@ -56,5 +56,9 @@ namespace CerealFileTransfer {
 
             network.SendPackage(package);
         }
+
+        private void CFT_Loaded(object sender, RoutedEventArgs e) {
+            network.Open();
+        }
     }
 }
