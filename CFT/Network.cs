@@ -60,7 +60,7 @@ namespace CerealFileTransfer {
 
         public void SendPackage(Byte[][] package) {
             for (int i = 0; i < package.Length; i++) {
-                this.serial.Write(package[i], 0, this.packageSize);
+                this.serial.Write(package[i], 0, package[i].Length);
             }
         }
  
