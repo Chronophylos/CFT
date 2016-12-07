@@ -26,10 +26,12 @@ namespace CerealFileTransfer {
         }
 
         private void timer_tick(Object o) {
-            if (!network.isDataAvailable()) return;
+            if (!network.isDataAvailable())
+                return;
             Byte[][] headerpackage = new Byte[1][];
+            headerpackage[1] = CreateSpecialByteArray(4069);
             headerpackage = network.GetPackage(1);
-            String[] header = Convert.ToString(headerpackage[0]).Split(':').ToArray();
+            String[] header = Encoding.UTF8.GetString(headerpackage[0]).Split(':').ToArray();
             String filename = header[0];
             String filesize = header[1];
             Int32 packages = Convert.ToInt32(header[3]);
@@ -62,6 +64,14 @@ namespace CerealFileTransfer {
 
         private void CFT_Loaded(object sender, RoutedEventArgs e) {
             network.Open();
+        }
+        public static byte[] CreateSpecialByteArray(int length) {
+            var arr = new byte[length];
+            for (int i = 0; i < arr.Length; i++) {
+                arr[i] = 0x20;
+            }
+
+            return arr;
         }
     }
 }
