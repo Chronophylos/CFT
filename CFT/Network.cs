@@ -24,11 +24,11 @@ namespace CerealFileTransfer {
             this.packageSize = packageSize;
 
             this.serial = new SerialPort() {
-                PortName = portName,
+                PortName = this.portName,
                 BaudRate = baudrate,
-                DataBits = dataBits,
-                StopBits = stopBits,
-                Parity = parity,
+                DataBits = this.dataBits,
+                StopBits = this.stopBits,
+                Parity = this.parity,
                 ReadBufferSize = bufferSize,
                 WriteBufferSize = bufferSize / 2,
                 DtrEnable = true           
@@ -47,7 +47,7 @@ namespace CerealFileTransfer {
             Byte[][] package = new Byte[count][];
             Byte[] buffer = new Byte[this.packageSize];
 
-            for (int i = 0; i < count; i++) {
+            for (Int32 i = 0; i < count; i++) {
                 while (this.serial.BytesToRead < this.packageSize / 2) {
                     Debug.Print(Convert.ToString(this.serial.BytesToRead) + "/" + Convert.ToString(this.packageSize / 2));
                 }
@@ -59,12 +59,12 @@ namespace CerealFileTransfer {
         }
 
         public void SendPackage(Byte[][] package) {
-            for (int i = 0; i < package.Length - 1; i++) {
+            for (Int32 i = 0; i < package.Length - 1; i++) {
                 this.serial.Write(package[i], 0, package[i].Length - 1);
             }
         }
  
-        public Boolean isDataAvailable() {
+        public Boolean IsDataAvailable() {
             try {
                 if (this.serial.BytesToRead > 0) {
                     return true;

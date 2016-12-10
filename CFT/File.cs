@@ -31,7 +31,7 @@ namespace CerealFileTransfer {
             return package;
         }
 
-        public Int32 getPackages(String fileName) {
+        public Int32 GetPackages(String fileName) {
             FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
             FileInfo fileInfo = new FileInfo(fileName);
             Int32 packages = new Int32();
@@ -47,7 +47,7 @@ namespace CerealFileTransfer {
             FileStream fileStream = new FileStream(fileName, FileMode.Create, FileAccess.Write);
             Int32 packages = new Int32();
             packages = package.Length;
-            for (int i = 0; i < packages; i++) fileStream.Write(package[i], 0, 1);
+            for (Int32 i = 0; i < packages; i++) fileStream.Write(package[i], 0, 1);
         }
     }
 }

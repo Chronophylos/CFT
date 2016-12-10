@@ -20,30 +20,30 @@ namespace CerealFileTransfer {
 
         public MainWindow() {
             InitializeComponent();
-            network = new Network(baudrate, bufferSize, packageSize);
-            file = new File("%USERPROFILE%\\Desktop", packageSize);
-            timer = new System.Threading.Timer(timer_tick, null, 0, 500);
+            this.network = new Network(baudrate, bufferSize, packageSize);
+            this.file = new File("%USERPROFILE%\\Desktop", packageSize);
+            this.timer = new System.Threading.Timer(this.Timer_tick, null, 0, 500);
         }
 
-        private void timer_tick(Object o) {
-            if (!network.isDataAvailable())
+        private void Timer_tick(Object o) {
+            if (!this.network.IsDataAvailable())
                 return;
             Byte[][] headerpackage = new Byte[1][];
             headerpackage[1] = CreateSpecialByteArray(4069);
-            headerpackage = network.GetPackage(1);
+            headerpackage = this.network.GetPackage(1);
             String[] header = Encoding.UTF8.GetString(headerpackage[0]).Split(':').ToArray();
             String filename = header[0];
             String filesize = header[1];
             Int32 packages = Convert.ToInt32(header[3]);
-            switch (MessageBox.Show("Do you want to recieve " + fileName + "?", "", MessageBoxButton.YesNo)) {
+            switch (MessageBox.Show("Do you want to recieve " + this.fileName + "?", "", MessageBoxButton.YesNo)) {
                 case MessageBoxResult.No:
                     return;
                 default:
                     break;
             }
             Byte[][] datapackage = new Byte[packages][];
-            datapackage = network.GetPackage(packages);
-            file.Write(fileName, datapackage);
+            datapackage = this.network.GetPackage(packages);
+            this.file.Write(this.fileName, datapackage);
         }
 
         private void Btn_browse_Click(Object sender, RoutedEventArgs e) {
@@ -55,19 +55,19 @@ namespace CerealFileTransfer {
 
         private void Btn_send_Click(Object sender, RoutedEventArgs e) {
             Byte[][] headerpackage = new Byte[1][];
-            headerpackage[0] = Encoding.UTF8.GetBytes(this.fileName + ":" + "???B" + ":" + Convert.ToString(file.getPackages(this.fileName)));
-            Byte[][] package = new Byte[file.getPackages(this.fileName)][];
-            package = file.Read(this.fileName);
-            network.SendPackage(headerpackage);
-            network.SendPackage(package);
+            headerpackage[0] = Encoding.UTF8.GetBytes(this.fileName + ":" + "???B" + ":" + Convert.ToString(this.file.GetPackages(this.fileName)));
+            Byte[][] package = new Byte[this.file.GetPackages(this.fileName)][];
+            package = this.file.Read(this.fileName);
+            this.network.SendPackage(headerpackage);
+            this.network.SendPackage(package);
         }
 
-        private void CFT_Loaded(object sender, RoutedEventArgs e) {
-            network.Open();
+        private void CFT_Loaded(Object sender, RoutedEventArgs e) {
+            this.network.Open();
         }
-        public static byte[] CreateSpecialByteArray(int length) {
-            var arr = new byte[length];
-            for (int i = 0; i < arr.Length; i++) {
+        public static Byte[] CreateSpecialByteArray(Int32 length) {
+            Byte[] arr = new Byte[length];
+            for (Int32 i = 0; i < arr.Length; i++) {
                 arr[i] = 0x20;
             }
 
