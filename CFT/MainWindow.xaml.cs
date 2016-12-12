@@ -32,7 +32,7 @@ namespace CerealFileTransfer {
             Byte[][] headerpackage = new Byte[1][];
             //headerpackage[1] = CreateSpecialByteArray(4069);
             headerpackage = this.network.GetPackage(1);
-            String[] header = Encoding.UTF8.GetString(headerpackage[0]).Split(':').ToArray();
+            String[] header = Encoding.UTF8.GetString(headerpackage[0]).Split(';').ToArray();
             String filename = header[0];
             String filesize = header[1];
             Int32 packages = Convert.ToInt32(header[3]);
@@ -56,7 +56,8 @@ namespace CerealFileTransfer {
 
         private void Btn_send_Click(Object sender, RoutedEventArgs e) {
             Byte[][] headerpackage = new Byte[1][];
-            headerpackage[0] = Encoding.UTF8.GetBytes(this.fileName + ":" + "???B" + ":" + Convert.ToString(this.file.GetPackages(this.fileName)));
+            String info = this.fileName + ";" + "???B" + ";" + Convert.ToString(this.file.GetPackages(this.fileName));
+            headerpackage[0] = Encoding.UTF8.GetBytes(info);
             Byte[][] package = new Byte[this.file.GetPackages(this.fileName)][];
             package = this.file.Read(this.fileName);
             this.network.SendPackage(headerpackage);
