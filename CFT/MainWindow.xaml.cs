@@ -35,15 +35,16 @@ namespace CerealFileTransfer {
             String[] header = Encoding.UTF8.GetString(headerpackage[0]).Split(';').ToArray();
             String filename = header[0];
             String filesize = header[1];
-            Int32 packages = Convert.ToInt32(header[3]);
+            String packages = header[3];
+            Debug.Write(Convert.ToInt32(packages));
             switch (MessageBox.Show("Do you want to recieve " + this.fileName + "?", "", MessageBoxButton.YesNo)) {
                 case MessageBoxResult.No:
                     return;
                 default:
                     break;
             }
-            Byte[][] datapackage = new Byte[packages][];
-            datapackage = this.network.GetPackage(packages);
+            Byte[][] datapackage = new Byte[Convert.ToInt32(packages)][];
+            datapackage = this.network.GetPackage(Convert.ToInt32(packages));
             this.file.Write(this.fileName, datapackage);
         }
 
