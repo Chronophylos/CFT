@@ -35,7 +35,7 @@ namespace CerealFileTransfer {
             String[] header = Encoding.UTF8.GetString(headerpackage[0]).Split(';').ToArray();
             String filename = header[0];
             String filesize = header[1];
-            Int32 packages = Convert.ToInt32(header[4]);
+            Int32 packages = Convert.ToInt32(header[3]);
             switch (MessageBox.Show("Do you want to recieve " + this.fileName + "?", "", MessageBoxButton.YesNo)) {
                 case MessageBoxResult.No:
                     return;
