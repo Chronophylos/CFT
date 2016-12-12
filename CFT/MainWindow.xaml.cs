@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Diagnostics;
 
 namespace CerealFileTransfer {
     /// <summary>
@@ -29,7 +30,7 @@ namespace CerealFileTransfer {
             if (!this.network.IsDataAvailable())
                 return;
             Byte[][] headerpackage = new Byte[1][];
-            headerpackage[1] = CreateSpecialByteArray(4069);
+            //headerpackage[1] = CreateSpecialByteArray(4069);
             headerpackage = this.network.GetPackage(1);
             String[] header = Encoding.UTF8.GetString(headerpackage[0]).Split(':').ToArray();
             String filename = header[0];

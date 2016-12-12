@@ -41,6 +41,7 @@ namespace CerealFileTransfer {
             } catch (Exception ex) {
                 Debug.Print(ex.Message);
             }
+            Debug.Print("Serial Port Opened");
         }
 
         public Byte[][] GetPackage(Int32 count) {
@@ -48,8 +49,8 @@ namespace CerealFileTransfer {
             Byte[] buffer = new Byte[this.packageSize];
 
             for (Int32 i = 0; i < count; i++) {
-                while (this.serial.BytesToRead < this.packageSize / 2) {
-                    Debug.Print(Convert.ToString(this.serial.BytesToRead) + "/" + Convert.ToString(this.packageSize / 2));
+                while (this.serial.BytesToRead < this.packageSize) {
+                    Debug.Print(Convert.ToString(this.serial.BytesToRead) + "/" + Convert.ToString(this.packageSize));
                 }
                 this.serial.Read(buffer, 0, 1);
                 package[i] = buffer;
@@ -66,6 +67,7 @@ namespace CerealFileTransfer {
  
         public Boolean IsDataAvailable() {
             try {
+                Debug.Print(Convert.ToString(this.serial.BytesToRead));
                 if (this.serial.BytesToRead > 0) {
                     return true;
                 } else {
