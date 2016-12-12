@@ -11,7 +11,7 @@ namespace CerealFileTransfer {
     /// </summary>
     public partial class MainWindow : Window {
         private const Int32 baudrate = 9600;
-        private const Int32 packageSize = 4096 * 2;
+        private const Int32 packageSize = 4096 / 2;
         private const Int32 bufferSize = 4096;
         private Network network;
         private File file;
