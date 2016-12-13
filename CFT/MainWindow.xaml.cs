@@ -1,51 +1,79 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO.Ports;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows;
-using System.Diagnostics;
 
 namespace CerealFileTransfer {
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
-        private const Int32 baudrate = 9600;
+        private const Int32 baudrate    = 128000;
         private const Int32 packageSize = 4096 / 2;
-        private const Int32 bufferSize = 4096;
-        private Network network;
-        private File file;
-        private System.Threading.Timer timer;
-        private String fileName;
+        private const Int32 bufferSize  = 4096;
+        private Network     network;
+        private File        file;
+        private Timer       networkTimer;
+        private String      fileName;
 
         public MainWindow() {
             InitializeComponent();
-            this.network = new Network(baudrate, bufferSize, packageSize);
-            this.file = new File("%USERPROFILE%\\Desktop", packageSize);
-            this.timer = new System.Threading.Timer(this.Timer_tick, null, 0, 500);
+            String portName = "";
+            while (!Array.Exists(SerialPort.GetPortNames(), element => element == portName)) { // while not this.portName in Serial.GetPortNames()
+                if (InputBox.Show("Cereal File Transfer",
+                                  "Please choose a Port: (" + String.Join(", ", SerialPort.GetPortNames()) + ")",
+                                  ref portName) == System.Windows.Forms.DialogResult.Cancel) {
+                    Environment.Exit(2);
+                }
+                portName = portName.ToUpper();
+            }
+            this.Rtb_Log.AppendText("Using Port: " + portName + '\n');
+
+            this.network = new Network(portName, baudrate, bufferSize, packageSize, this.Pb_progress, Application.Current.Dispatcher);
+            this.file = new File(packageSize);
+            this.networkTimer = new Timer(this.NetworkTimer_tick, null, 0, 500);
         }
 
-        private void Timer_tick(Object o) {
-            if (!this.network.IsDataAvailable())
+        private void NetworkTimer_tick(Object o) {
+            if (!this.network.IsDataAvailable)
                 return;
-            Byte[][] headerpackage = new Byte[1][];
-            //headerpackage[1] = CreateSpecialByteArray(4069);
-            headerpackage = this.network.GetPackage(1);
-            String[] header = Encoding.UTF8.GetString(headerpackage[0]).Split(';').ToArray();
-            String filename = header[0];
-            String filesize = header[1];
-            String packages = header[3];
-            Debug.Write(Convert.ToInt32(packages));
-            switch (MessageBox.Show("Do you want to recieve " + this.fileName + "?", "", MessageBoxButton.YesNo)) {
+            Application.Current.Dispatcher.Invoke((Action)(() => {
+                this.Rtb_Log.AppendText("File Transfer incoming\n");
+            }));
+            this.networkTimer.Change(Timeout.Infinite, Timeout.Infinite);
+
+            Byte[][]    headerpackage = this.network.GetPackage(1);
+            String[]    header =        Encoding.UTF8.GetString(headerpackage[0]).Split(';').ToArray();
+            String      fileName =      header[0];
+            String      fileSize =      header[1];
+            Int32       packages =      Int32.Parse(header[3]);
+
+            switch (MessageBox.Show("Do you want to recieve " + fileName + "?", "", MessageBoxButton.YesNo)) {
                 case MessageBoxResult.No:
+                    this.network.ImHappy(false);
                     return;
                 default:
                     break;
             }
-            Byte[][] datapackage = new Byte[Convert.ToInt32(packages)][];
-            datapackage = this.network.GetPackage(Convert.ToInt32(packages));
-            this.file.Write(this.fileName, datapackage);
+            OpenFileDialog fileDialog = new OpenFileDialog() {
+                CheckFileExists = false,
+                ShowReadOnly =    true
+            };
+            fileDialog.ShowDialog();
+
+            this.network.ImHappy();
+
+            Byte[][] datapackage = this.network.GetPackage(packages);
+            this.file.Write(fileDialog.FileName, datapackage);
+
+            Application.Current.Dispatcher.Invoke((Action)(() => {
+                this.Rtb_Log.AppendText("File Transfer Successful\n");
+            }));
+            this.networkTimer.Change(0, 500);
         }
 
         private void Btn_browse_Click(Object sender, RoutedEventArgs e) {
@@ -56,25 +84,36 @@ namespace CerealFileTransfer {
         }
 
         private void Btn_send_Click(Object sender, RoutedEventArgs e) {
+            try {
+                if (this.fileName.Length == 0) {
+                    return;
+                }
+            } catch(Exception ex) {
+                Debug.Print(ex.Message);
+                return;
+            } 
             Byte[][] headerpackage = new Byte[1][];
-            String info = this.fileName + ';' + "???B" + ';' + ';' + Convert.ToString(this.file.GetPackages(this.fileName)) + ';';
+            String info = this.fileName + ';' + "???B" + ';' + "\0" + ';' + Convert.ToString(this.file.GetPackages(this.fileName)) + ';' + "\0";
+            for (;this.network.PackageSize != info.Length;) {
+                info += '\0';
+            }
             headerpackage[0] = Encoding.UTF8.GetBytes(info);
             Byte[][] package = new Byte[this.file.GetPackages(this.fileName)][];
+
             package = this.file.Read(this.fileName);
+            this.Rtb_Log.AppendText("Sending " + this.fileName + '\n');
             this.network.SendPackage(headerpackage);
+            if (!this.network.IsPartnerHappy) {
+                this.Rtb_Log.AppendText("File Transfer Rejected");
+                return;
+            }
+            this.Rtb_Log.AppendText("File Transfer Accepted\n");
             this.network.SendPackage(package);
+            this.Rtb_Log.AppendText("Finished sending file\n");
         }
 
         private void CFT_Loaded(Object sender, RoutedEventArgs e) {
             this.network.Open();
-        }
-        public static Byte[] CreateSpecialByteArray(Int32 length) {
-            Byte[] arr = new Byte[length];
-            for (Int32 i = 0; i < arr.Length; i++) {
-                arr[i] = 0x20;
-            }
-
-            return arr;
         }
     }
 }
