@@ -42,6 +42,16 @@ namespace CerealFileTransfer {
             this.networkTimer = new Timer(this.NetworkTimer_tick, null, 0, 500);
         }
 
+        static String BytesToString(long byteCount) {
+            string[] suf = { "B", "KB", "MB", "GB", "TB", "PB", "EB" }; //Longs run out around EB
+            if (byteCount == 0)
+                return "0" + suf[0];
+            long bytes = Math.Abs(byteCount);
+            int place = Convert.ToInt32(Math.Floor(Math.Log(bytes, 1024)));
+            double num = Math.Round(bytes / Math.Pow(1024, place), 1);
+            return (Math.Sign(byteCount) * num).ToString() + suf[place];
+        }
+
         private void NetworkTimer_tick(Object o) {
             if (!this.network.IsDataAvailable) {
                 return;
@@ -58,18 +68,25 @@ namespace CerealFileTransfer {
             String      fileSize =      header[1];
             Int32       packages =      Int32.Parse(header[3]);
 
-            switch (MessageBox.Show("Do you want to recieve " + fileName + "?\n" + fileSize, "", MessageBoxButton.YesNo)) {
+            switch (MessageBox.Show("Do you want to recieve " + fileName + "? " + fileSize, "", MessageBoxButton.YesNo)) {
                 case MessageBoxResult.No:
                     this.network.ImHappy(false);
                     this.networkTimer.Change(0, 500); // resume timer
                     return;
             }
-
-            OpenFileDialog fileDialog = new OpenFileDialog() {
+            /* OpenFileDialog fileDialog = new OpenFileDialog() {
                 FileName = System.IO.Path.GetFileName(fileName),
                 CheckFileExists = false,
                 ShowReadOnly = true,
-                Multiselect = false
+                Multiselect = false,
+                Title = "Save..."
+            };*/
+            SaveFileDialog fileDialog = new SaveFileDialog() {
+                FileName = System.IO.Path.GetFileName(fileName),
+                CheckFileExists = false,
+                OverwritePrompt = true,
+                CreatePrompt = false,
+                Title = "Save..."
             };
             fileDialog.ShowDialog();
 
@@ -103,7 +120,7 @@ namespace CerealFileTransfer {
             System.IO.FileInfo fileInfo = new System.IO.FileInfo(this.fileName);
 
             Byte[][] headerpackage = new Byte[1][];
-            String info = this.fileName + ';' + fileInfo.Length + "B" + ';' + "\0" + ';' + Convert.ToString(this.file.GetPackages(this.fileName)) + ';' + "\0";
+            String info = this.fileName + ';' + BytesToString(fileInfo.Length) + ';' + "\0" + ';' + Convert.ToString(this.file.GetPackages(this.fileName)) + ';' + "\0";
             while (this.network.PackageSize != info.Length) {
                 info += '\0';
             }

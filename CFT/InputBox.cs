@@ -45,6 +45,7 @@ namespace CerealFileTransfer {
             form.MaximizeBox =      false;
             form.AcceptButton =     buttonOk;
             form.CancelButton =     buttonCancel;
+            form.TopMost =          true;
 
             DialogResult dialogResult = form.ShowDialog();
             value = textBox.Text;
