@@ -1,0 +1,18 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CerealFileTransfer"
+        xmlns:Properties="clr-namespace:CerealFileTransfer.Properties" x:Name="CFT" x:Class="CerealFileTransfer.MainWindow"
+        mc:Ignorable="d"
+        Title="Cereal File Transfer" Height="204.771" Width="709.545" Icon="Icon.ico" Loaded="CFT_Loaded">
+    <Grid>
+        <ProgressBar x:Name="Pb_progress" Margin="71,0,10,35" Height="16" VerticalAlignment="Bottom"/>
+        <Button x:Name="Btn_send" Content="Send" Margin="0,0,10,10" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75" Click="Btn_send_Click"/>
+        <TextBox x:Name="Txb_path" Margin="10,0,115,10" TextWrapping="Wrap" VerticalAlignment="Bottom" Height="20"/>
+        <RichTextBox x:Name="Rtb_Log" Margin="10,10,10,58" FontFamily="Source Code Pro" IsReadOnly="True" TextOptions.TextFormattingMode="Display" TextOptions.TextHintingMode="Fixed" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Block.LineHeight="6"/>
+        <Label Content="Progress" HorizontalAlignment="Left" Margin="10,0,0,32" Height="26" VerticalAlignment="Bottom"/>
+        <Button x:Name="Btn_browse" Content="..." Margin="0,0,90,10" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="20" Click="Btn_browse_Click"/>
+    </Grid>
+</Window>

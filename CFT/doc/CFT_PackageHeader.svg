@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" width="574" height="377" viewBox="0 0 574 377">
+<style type="text/css"><![CDATA[
+text { font:12px Dialog; }
+]]></style>
+<rect x="-485" y="-485" width="1544" height="1347" style="fill:rgb(255,255,255);stroke:none" />
+<clipPath id="clip1"><path d="M14,14 L560,14 L560,363 L14,363 L14,14 Z" /></clipPath>
+<path d="M18,16 C16.8945313,16 16,16.8945313 16,18 L16,359 C16,360.1054688 16.8945313,361 18,361 L556,361 C557.1054688,361 558,360.1054688 558,359 L558,18 C558,16.8945313 557.1054688,16 556,16 Z M18,16" style="fill:rgb(202,221,254);stroke:none" clip-path="url(#clip1)" />
+<clipPath id="clip2"><path d="M15,177 L559,177 L559,290 L15,290 L15,177 Z" /></clipPath>
+<path d="M18,16 C16.8945313,16 16,16.8945313 16,18 L16,359 C16,360.1054688 16.8945313,361 18,361 L556,361 C557.1054688,361 558,360.1054688 558,359 L558,18 C558,16.8945313 557.1054688,16 556,16 Z M18,16" style="fill:rgb(254,244,236);stroke:none" clip-path="url(#clip2)" />
+<clipPath id="clip3"><path d="M15,289 L559,289 L559,362 L15,362 L15,289 Z" /></clipPath>
+<path d="M18,16 C16.8945313,16 16,16.8945313 16,18 L16,359 C16,360.1054688 16.8945313,361 18,361 L556,361 C557.1054688,361 558,360.1054688 558,359 L558,18 C558,16.8945313 557.1054688,16 556,16 Z M18,16" style="fill:rgb(254,244,236);stroke:none" clip-path="url(#clip3)" />
+<text x="49" y="53" style="font:18px Open Sans">Cereal File Transfer Package </text>
+<text x="216" y="95" style="font:18px Open Sans">Header </text>
+<image x="0" y="0" width="527" height="83" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAg8AAABTCAYAAAAY9uQHAAACSklEQVR42u3czUqUYRgG4DmPsj/NQ+ocioKIiIhqIxEhhoqNpoxKEIX2Y6VitilUKNoIkRBFUvZHQYW0CRyffN7w2xS4cBN0XXAzN88R3LzMTK0GAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/MsiYlsBAIyHv2ayp60+1dMa+Wk8AIDxsGVyOKw3v0V+Gg8AYDxs+eJQxsPP17HZN18gAID/cDzM1tvnZvvbo2Sj5+3sdGPuzHTj92hYXfgjmy8QAMB/OB7uX9of6z+el2TP2+nJoVj5OBqPJw9Urw3xeczLAwAYD1Gb6WuL9dXFkux5O3V3MJbfj5RkL+PhXY/vPACA8RC16d7WWP/+pCR73k5ODMTLt8Ml2f3aAgCoxsNU975ofn1Ukj1vJ27WY2m5UZLd/zwAANV4uNe1N5pfZkqy5+34WF8svhoqyW48AADVeLjTuSeanyZKsuft2PXeePpisCS78QAAVOPh9oXd0fxwrSR73o5e7Y6Fpcsl2Y0HAKAaD7fO74q1lZGS7Hk7cuViPHzWX5LdeAAAqvFw41xLrL0ZKMmet8OjXfFgsV6S3XgAAKrxMN6xY268Y2dkxjpa5vN2aLhzbiOROdjonDceAIBqPGwnvwDYH+pd3j4v7gAAAABJRU5ErkJggg==" /><text x="35" y="230" style="font:13px Open Sans">4 Control Bytes</text>
+<clipPath id="clip4"><path d="M273,182 L543,182 L543,283 L273,283 Z M274,233 L451,233 L451,263 L274,263 Z M274,233 Z M274,233" /></clipPath>
+<path d="M466,247.984375 L466,218 C466,215.7929688 467.7929688,214 470,214 L473,214" style="fill:none;stroke:rgb(127,127,127)" clip-path="url(#clip4)" />
+<clipPath id="clip5"><path d="M273,182 L543,182 L543,283 L273,283 Z M274,233 L451,233 L451,263 L274,263 Z M274,233 Z M274,233" /></clipPath>
+<path d="M466,247.984375 C466,247.9921875 467.7929688,248 470,248 L473,248" style="fill:none;stroke:rgb(127,127,127)" clip-path="url(#clip5)" />
+<clipPath id="clip6"><path d="M273,182 L543,182 L543,283 L273,283 Z M274,233 L451,233 L451,263 L274,263 Z M274,233 Z M274,233" /></clipPath>
+<path d="M466,247.984375 L466,278 C466,280.2070313 467.7929688,282 470,282 L473,282" style="fill:none;stroke:rgb(127,127,127)" clip-path="url(#clip6)" />
+<clipPath id="clip7"><path d="M272,181 L544,181 L544,284 L272,284 L272,181 Z" /></clipPath>
+<path d="M453,248.0507813 L466,247.984375" style="fill:none;stroke:rgb(127,127,127)" clip-path="url(#clip7)" />
+<text x="285" y="247" style="font:10px Open Sans">Package Type (4 B)</text>
+<clipPath id="clip8"><path d="M452,242 L465,242 L465,255 L452,255 L452,242 Z" /></clipPath>
+<path d="M462.5,248 C462.5,245.515625 460.484375,243.5 458,243.5 C455.515625,243.5 453.5,245.515625 453.5,248 C453.5,250.484375 455.515625,252.5 458,252.5 C460.484375,252.5 462.5,250.484375 462.5,248 Z M462.5,248" style="fill:rgb(250,250,250);stroke:none" clip-path="url(#clip8)" />
+<clipPath id="clip9"><path d="M452,242 L465,242 L465,255 L452,255 L452,242 Z" /></clipPath>
+<path d="M462.5,248 C462.5,245.515625 460.484375,243.5 458,243.5 C455.515625,243.5 453.5,245.515625 453.5,248 C453.5,250.484375 455.515625,252.5 458,252.5 C460.484375,252.5 462.5,250.484375 462.5,248 Z M462.5,248" style="fill:none;stroke:rgb(127,127,127)" clip-path="url(#clip9)" />
+<clipPath id="clip10"><path d="M452,242 L465,242 L465,255 L452,255 L452,242 Z" /></clipPath>
+<path d="M456,248 L460,248" style="fill:none;stroke:rgb(150,160,200)" clip-path="url(#clip10)" />
+<clipPath id="clip11"><path d="M471,181 L542,181 L542,216 L471,216 L471,181 Z" /></clipPath>
+<path d="M473,214 L539,214 Z M473,214" style="fill:none;stroke:rgb(127,127,127)" clip-path="url(#clip11)" />
+<text x="483" y="197" style="font:10px Open Sans">POST</text>
+<clipPath id="clip12"><path d="M471,215 L544,215 L544,250 L471,250 L471,215 Z" /></clipPath>
+<path d="M473,248 L541,248 Z M473,248" style="fill:none;stroke:rgb(127,127,127)" clip-path="url(#clip12)" />
+<text x="483" y="231" style="font:10px Open Sans">SEND</text>
+<clipPath id="clip13"><path d="M471,249 L530,249 L530,284 L471,284 L471,249 Z" /></clipPath>
+<path d="M473,282 L527,282 Z M473,282" style="fill:none;stroke:rgb(127,127,127)" clip-path="url(#clip13)" />
+<text x="483" y="265" style="font:10px Open Sans">GET</text>
+<text x="35" y="325" style="font:13px Open Sans">4 + 32++ Data Bytes</text>
+<text x="285" y="309" style="font:10px Open Sans">Date Size (4 B)</text>
+<text x="285" y="344" style="font:10px Open Sans">Data  (32++ B)</text>
+<clipPath id="clip14"><path d="M14,14 L560,14 L560,363 L14,363 L14,14 Z" /></clipPath>
+<path d="M18,16 C16.8945313,16 16,16.8945313 16,18 L16,359 C16,360.1054688 16.8945313,361 18,361 L556,361 C557.1054688,361 558,360.1054688 558,359 L558,18 C558,16.8945313 557.1054688,16 556,16 Z M16,137.5 L558,137.5 M16,177.5 L558,177.5 M16,289.5 L558,289.5 M269,137.5 L269,361" style="fill:none;stroke:rgb(61,83,127)" clip-path="url(#clip14)" />
+</svg>
