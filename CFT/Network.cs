@@ -110,14 +110,14 @@ namespace CerealFileTransfer {
 
         public void SendPackage(Byte[][] package) {
             this.dispatcher.Invoke((Action)(() => {
-                this.progressBar.Maximum = this.packageSize * package.Length;
+                this.progressBar.Maximum = package.Length;
             }));
 
             for (Int32 i = 0; i < package.Length; i++) {
                 this.serial.Write(package[i], 0, package[i].Length);
 
                 this.dispatcher.Invoke((Action)(() => {
-                    this.progressBar.Value += this.packageSize * (i + 1);
+                    this.progressBar.Value = (i + 1);
                 }));               
             }
 
