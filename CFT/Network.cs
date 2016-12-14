@@ -40,14 +40,41 @@ namespace CerealFileTransfer {
             };
         }
 
-        public void Open() {
+        public Boolean Open() {
             try {
                 this.serial.Open();
-            } catch (Exception ex) {
+                return true;
+            } catch (UnauthorizedAccessException ex) {
                 Debug.Print(ex.Message);
+                Debug.Print("Der Zugriff auf den Anschluss wird verweigert.– oder –Der aktuelle Prozess, oder\n" +
+                            "ein anderer Prozess auf dem System, lässt bereits den angegebenen COM-Port entweder\n" +
+                            "durch eine System.IO.Ports.SerialPort-Instanz oder in nicht verwaltetem Code\n" +
+                            "öffnen.");
+            } catch (ArgumentOutOfRangeException ex) {
+                Debug.Print(ex.Message);
+                Debug.Print("Eine oder mehrere Eigenschaften für diese Instanz sind ungültig.Beispielsweise\n" +
+                             "hat die System.IO.Ports.SerialPort.Parity-Eigenschaft, die System.IO.Ports.SerialPort.DataBits-Eigenschaft\n" +
+                             "oder die System.IO.Ports.SerialPort.Handshake-Eigenschaft keinen gültigen Wert,\n" +
+                             "die System.IO.Ports.SerialPort.BaudRate ist kleiner oder gleich 0, die System.IO.Ports.SerialPort.ReadTimeout-Eigenschaft\n" +
+                             "oder die System.IO.Ports.SerialPort.WriteTimeout-Eigenschaft ist kleiner als\n" +
+                             "0 und nicht System.IO.Ports.SerialPort.InfiniteTimeout.");
+            } catch (ArgumentException ex) {
+                Debug.Print(ex.Message);
+                Debug.Print("Der Anschlussname fängt nicht mit \"COM\" an. – oder –Der Dateityp des Anschlusses\n" +
+                             "wird nicht unterstützt.");
+            } catch (System.IO.IOException ex) {
+                Debug.Print(ex.Message);
+                Debug.Print("Der Anschluss befindet sich in einem ungültigen Zustand. – oder – Fehler beim\n" +
+                             "Versuch, den Zustand des zugrunde liegenden Anschlusses festzulegen.Beispielsweise\n" +
+                             "waren die von diesem System.IO.Ports.SerialPort-Objekt übergebenen Parameter\n" +
+                             "ungültig.");
+            } catch (InvalidOperationException ex) {
+                Debug.Print(ex.Message);
+                Debug.Print("Der angegebene Port auf der aktuellen Instanz vom System.IO.Ports.SerialPort\n" +
+                             "ist bereits geöffnet.");
             }
+            return false;
         }
-
         private Double StopBitsToInt(StopBits stopBit) {
             return (stopBit == StopBits.OnePointFive) ? 1.5 : (Double)stopBit;
         }

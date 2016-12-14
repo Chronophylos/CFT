@@ -12,7 +12,7 @@ namespace CerealFileTransfer {
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
-        private const Int32 baudrate    = 128000;
+        private const Int32 baudrate    = 9600;//128000;
         private const Int32 packageSize = 4096 / 2;
         private const Int32 bufferSize  = 4096;
         private Network     network;
@@ -23,7 +23,11 @@ namespace CerealFileTransfer {
         public MainWindow() {
             InitializeComponent();
             String portName = "";
-            while (!Array.Exists(SerialPort.GetPortNames(), element => element == portName)) { // while not this.portName in Serial.GetPortNames()
+            while (!Array.Exists(SerialPort.GetPortNames(), element => element == portName)) { // while not this.portName in SerialPort.GetPortNames()
+                if (SerialPort.GetPortNames().Length == 1) {
+                    portName = SerialPort.GetPortNames()[0];
+                    break;
+                }
                 if (InputBox.Show("Cereal File Transfer",
                                   "Please choose a Port: (" + String.Join(", ", SerialPort.GetPortNames()) + ")",
                                   ref portName) == System.Windows.Forms.DialogResult.Cancel) {
