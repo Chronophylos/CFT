@@ -43,12 +43,14 @@ namespace CerealFileTransfer {
         }
 
         private void NetworkTimer_tick(Object o) {
-            if (!this.network.IsDataAvailable)
+            if (!this.network.IsDataAvailable) {
                 return;
+            }
             Application.Current.Dispatcher.Invoke((Action)(() => {
                 this.Rtb_Log.AppendText("File Transfer incoming\n");
             }));
-            this.networkTimer.Change(Timeout.Infinite, Timeout.Infinite);
+
+            this.networkTimer.Change(Timeout.Infinite, Timeout.Infinite); // stop timer
 
             Byte[][]    headerpackage = this.network.GetPackage(1);
             String[]    header =        Encoding.UTF8.GetString(headerpackage[0]).Split(';').ToArray();
@@ -56,16 +58,19 @@ namespace CerealFileTransfer {
             String      fileSize =      header[1];
             Int32       packages =      Int32.Parse(header[3]);
 
-            switch (MessageBox.Show("Do you want to recieve " + fileName + "?", "", MessageBoxButton.YesNo)) {
+            switch (MessageBox.Show("Do you want to recieve " + fileName + "?\n" + fileSize, "", MessageBoxButton.YesNo)) {
                 case MessageBoxResult.No:
                     this.network.ImHappy(false);
+                    this.networkTimer.Change(0, 500); // resume timer
                     return;
-                default:
-                    break;
             }
+
+            String[] fileNameArray = fileName.Split('\\');
             OpenFileDialog fileDialog = new OpenFileDialog() {
+                FileName = fileNameArray[fileNameArray.Length - 1],
                 CheckFileExists = false,
-                ShowReadOnly =    true
+                ShowReadOnly = true,
+                Multiselect = false
             };
             fileDialog.ShowDialog();
 
@@ -77,7 +82,7 @@ namespace CerealFileTransfer {
             Application.Current.Dispatcher.Invoke((Action)(() => {
                 this.Rtb_Log.AppendText("File Transfer Successful\n");
             }));
-            this.networkTimer.Change(0, 500);
+            this.networkTimer.Change(0, 500); // resume timer
         }
 
         private void Btn_browse_Click(Object sender, RoutedEventArgs e) {
@@ -95,29 +100,36 @@ namespace CerealFileTransfer {
             } catch(Exception ex) {
                 Debug.Print(ex.Message);
                 return;
-            } 
+            }
+            System.IO.FileInfo fileInfo = new System.IO.FileInfo(this.fileName);
+
             Byte[][] headerpackage = new Byte[1][];
-            String info = this.fileName + ';' + "???B" + ';' + "\0" + ';' + Convert.ToString(this.file.GetPackages(this.fileName)) + ';' + "\0";
-            for (;this.network.PackageSize != info.Length;) {
+            String info = this.fileName + ';' + fileInfo.Length + "B" + ';' + "\0" + ';' + Convert.ToString(this.file.GetPackages(this.fileName)) + ';' + "\0";
+            while (this.network.PackageSize != info.Length) {
                 info += '\0';
             }
+
             headerpackage[0] = Encoding.UTF8.GetBytes(info);
             Byte[][] package = new Byte[this.file.GetPackages(this.fileName)][];
 
             package = this.file.Read(this.fileName);
+
             this.Rtb_Log.AppendText("Sending " + this.fileName + '\n');
+
             this.network.SendPackage(headerpackage);
+
             if (!this.network.IsPartnerHappy) {
                 this.Rtb_Log.AppendText("File Transfer Rejected");
                 return;
             }
+
             this.Rtb_Log.AppendText("File Transfer Accepted\n");
             this.network.SendPackage(package);
             this.Rtb_Log.AppendText("Finished sending file\n");
         }
 
         private void CFT_Loaded(Object sender, RoutedEventArgs e) {
-            this.network.Open();
+            while (!this.network.Open()) ;
         }
     }
 }

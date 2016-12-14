@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 
@@ -38,15 +39,26 @@ namespace CerealFileTransfer {
         }
 
         public void Write(String fileName, Byte[][] package) {
-            using(
-                StreamWriter streamWriter = new StreamWriter(
-                    new FileStream(fileName,
-                        FileMode.Create,
-                        FileAccess.Write),
-                    Encoding.UTF8)){
-                for (Int32 i = 0; i < package.Length; i++) {
-                    streamWriter.Write(Encoding.UTF8.GetString(package[i]).Replace("\0", String.Empty));
+            try {
+                using (
+                StreamWriter streamWriter = new StreamWriter(new FileStream(fileName, FileMode.Create, FileAccess.Write), Encoding.UTF8)) {
+                    for (Int32 i = 0; i < package.Length; i++) {
+                        streamWriter.Write(Encoding.UTF8.GetString(package[i]).Replace("\0", String.Empty));
+                    }
                 }
+            } catch (ObjectDisposedException ex) {
+                Debug.Print(ex.Message);
+                Debug.Print("System.IO.StreamWriter.AutoFlush ist true, oder der System.IO.StreamWriter-Puffer\n" +
+                            "ist voll, und der aktuelle Writer ist geschlossen.");
+            } catch (NotSupportedException ex) {
+                Debug.Print(ex.Message);
+                Debug.Print("System.IO.StreamWriter.AutoFlush ist true, oder der System.IO.StreamWriter-Puffer\n" +
+                            "ist voll, und der Inhalt des Puffers kann nicht in den zugrunde liegenden Stream\n" +
+                            "fester Größe geschrieben werden, da der System.IO.StreamWriter sich am Ende des\n" +
+                            "Streams befindet.");
+            } catch (IOException ex) {
+                Debug.Print(ex.Message);
+                Debug.Print("E/A-Fehler.");
             }
         }
     }
