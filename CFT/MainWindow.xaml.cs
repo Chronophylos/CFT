@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO.Ports;
 using System.Linq;
@@ -12,13 +13,14 @@ namespace CerealFileTransfer {
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
-        private const Int32 baudrate    = 9600;//128000;
-        private const Int32 packageSize = 4096 / 2;
-        private const Int32 bufferSize  = 4096;
-        private Network     network;
-        private File        file;
-        private Timer       networkTimer;
-        private String      fileName;
+        private const Int32         baudrate    = 9600;
+        private const Int32         packageSize = 4096 / 2;
+        private const Int32         bufferSize  = 4096;
+        private Network             network;
+        private File                file;
+        private Timer               networkTimer;
+        private String              fileName;
+        private Thread              sendFile_Thread;
 
         public MainWindow() {
             InitializeComponent();
@@ -38,6 +40,50 @@ namespace CerealFileTransfer {
             this.network = new Network(portName, baudrate, bufferSize, packageSize, this.Pb_progress, Application.Current.Dispatcher);
             this.file = new File(packageSize);
             this.networkTimer = new Timer(this.NetworkTimer_tick, null, 0, 500);
+            this.sendFile_Thread = new Thread(this.SendFile);
+        }
+
+        private void SendFile() {
+            Application.Current.Dispatcher.Invoke((Action)(() => {
+                this.Btn_send.IsEnabled = false;
+            }));
+
+            System.IO.FileInfo fileInfo = new System.IO.FileInfo(this.fileName);
+            Byte[][] headerpackage = new Byte[1][];
+            String info = this.fileName + ';' +
+                          BytesToString(fileInfo.Length) + ';' +
+                          "\0" + ';' +
+                          Convert.ToString(this.file.GetPackages(this.fileName)) + ';' +
+                          "\0";
+            while (this.network.PackageSize != info.Length) { info += '\0'; }
+
+            headerpackage[0] = Encoding.UTF8.GetBytes(info);
+            Byte[][] package = new Byte[this.file.GetPackages(this.fileName)][];
+
+            package = this.file.Read(this.fileName);
+
+            Application.Current.Dispatcher.Invoke((Action)(() => {
+                this.Rtb_Log.AppendText("Sending " + this.fileName + '\n');
+            }));
+
+            this.network.SendPackage(headerpackage);
+
+            if (!this.network.IsPartnerHappy) {
+                Application.Current.Dispatcher.Invoke((Action)(() => {
+                    this.Rtb_Log.AppendText("File Transfer Rejected");
+                }));
+            } else {
+                Application.Current.Dispatcher.Invoke((Action)(() => {
+                    this.Rtb_Log.AppendText("File Transfer Accepted\n");
+                }));
+                this.network.SendPackage(package);
+                Application.Current.Dispatcher.Invoke((Action)(() => {
+                    this.Rtb_Log.AppendText("Finished sending file\n");
+                }));
+            }
+            Application.Current.Dispatcher.Invoke((Action)(() => {
+                this.Btn_send.IsEnabled = true;
+            }));
         }
 
         static String BytesToString(long byteCount) {
@@ -102,38 +148,13 @@ namespace CerealFileTransfer {
             this.fileName = fileDialog.FileName;
         }
 
-        private void Btn_send_Click(Object sender, RoutedEventArgs e) { 
+        private void Btn_send_Click(Object sender, RoutedEventArgs e) {
             if (this.fileName.Length == 0) {
                 return;
             }
-            this.Btn_send.IsEnabled = false;
-
-            System.IO.FileInfo fileInfo = new System.IO.FileInfo(this.fileName);
-            Byte[][] headerpackage = new Byte[1][];
-            String info = this.fileName + ';' + 
-                          BytesToString(fileInfo.Length) + ';' +
-                          "\0" + ';' +
-                          Convert.ToString(this.file.GetPackages(this.fileName)) + ';' + 
-                          "\0";
-            while (this.network.PackageSize != info.Length) { info += '\0'; }
-
-            headerpackage[0] = Encoding.UTF8.GetBytes(info);
-            Byte[][] package = new Byte[this.file.GetPackages(this.fileName)][];
-
-            package = this.file.Read(this.fileName);
-
-            this.Rtb_Log.AppendText("Sending " + this.fileName + '\n');
-
-            this.network.SendPackage(headerpackage);
-
-            if (!this.network.IsPartnerHappy) {
-                this.Rtb_Log.AppendText("File Transfer Rejected");
-            } else {
-                this.Rtb_Log.AppendText("File Transfer Accepted\n");
-                this.network.SendPackage(package);
-                this.Rtb_Log.AppendText("Finished sending file\n");
+            if (!this.sendFile_Thread.IsAlive) {
+                this.sendFile_Thread.Start();
             }
-            this.Btn_send.IsEnabled = true;
         }
 
         private void CFT_Loaded(Object sender, RoutedEventArgs e) {
