@@ -94,7 +94,25 @@ namespace CerealFileTransfer {
                         this.progressBar.Value = this.serial.BytesToRead + this.packageSize * i;
                     }));
                 }
-                this.serial.Read(buffer, 0, this.packageSize);
+                try {
+                    this.serial.Read(buffer, 0, this.packageSize);
+                } catch (ArgumentNullException ex) {
+                    Debug.Print(ex.Message);
+                    Debug.Print("Der übergebene Puffer ist null.");
+                } catch (InvalidOperationException ex) {
+                    Debug.Print(ex.Message);
+                    Debug.Print("Der angegebene Anschluss ist nicht offen.");
+                } catch (ArgumentOutOfRangeException ex) {
+                    Debug.Print(ex.Message);
+                    Debug.Print("Der offset-Parameter oder der count-Parameter liegt außerhalb eines gültigen\n" +
+                                "Bereichs des übergebenen buffer.offset oder count ist kleiner als 0.");
+                } catch (ArgumentException ex) {
+                    Debug.Print(ex.Message);
+                    Debug.Print("Die Summe von offset und count ist größer als die Länge von buffer.");
+                } catch (TimeoutException ex) {
+                    Debug.Print(ex.Message);
+                    Debug.Print("Es waren keine Bytes zum Lesen verfügbar.");
+                }
                 this.dispatcher.Invoke((Action)(() => {
                     this.progressBar.Value = this.packageSize * i;
                 }));
@@ -114,8 +132,25 @@ namespace CerealFileTransfer {
             }));
 
             for (Int32 i = 0; i < package.Length; i++) {
-                this.serial.Write(package[i], 0, package[i].Length);
-
+                try {
+                    this.serial.Write(package[i], 0, package[i].Length);
+                } catch(ArgumentNullException ex) {
+                    Debug.Print(ex.Message);
+                    Debug.Print("Der übergebene buffer ist null.");
+                } catch (InvalidOperationException ex) {
+                    Debug.Print(ex.Message);
+                    Debug.Print("Der angegebene Anschluss ist nicht offen.");
+                } catch (ArgumentOutOfRangeException ex) {
+                    Debug.Print(ex.Message);
+                    Debug.Print("Der offset-Parameter oder der count-Parameter liegt außerhalb eines gültigen\n" +
+                                "Bereichs des übergebenen buffer.offset oder count ist kleiner als 0.");
+                } catch (ArgumentException ex) {
+                    Debug.Print(ex.Message);
+                    Debug.Print("Die Summe von offset und count ist größer als die Länge von buffer.");
+                } catch (TimeoutException ex) {
+                    Debug.Print(ex.Message);
+                    Debug.Print("Der Vorgang konnte nicht vor Ablauf des Timeouts abgeschlossen werden.");
+                }
                 this.dispatcher.Invoke((Action)(() => {
                     this.progressBar.Value = (i + 1);
                 }));               
@@ -132,6 +167,7 @@ namespace CerealFileTransfer {
                     return (this.serial.BytesToRead > 0) ? true : false;
                 } catch (InvalidOperationException ex) {
                     Debug.Print(ex.Message);
+                    Debug.Print("Der Anschluss ist nicht geöffnet.");
                 }
                 return false;
             }
@@ -139,13 +175,41 @@ namespace CerealFileTransfer {
 
         public Boolean IsPartnerHappy {
             get {
-                while (!this.IsDataAvailable);
-                return (this.serial.ReadChar() == 'Y') ? true : false;
-            }
+                while (!this.IsDataAvailable) ;
+                try {
+                    return (this.serial.ReadChar() == 'Y') ? true : false;
+                } catch (InvalidOperationException ex) {
+                    Debug.Print(ex.Message);
+                    Debug.Print("Der Anschluss ist nicht geöffnet.");
+                } catch (TimeoutException ex) {
+                    Debug.Print(ex.Message);
+                    Debug.Print("Der Vorgang konnte nicht vor Ablauf des Timeouts abgeschlossen werden.– oder\n" +
+                                "–Im zugewiesenen Timeoutzeitraum war kein Zeichen verfügbar.");
+                }
+                return false;
+            }  
         }
 
         public void ImHappy(Boolean IsHappy = true) {
-            this.serial.Write(new Char[] { (IsHappy) ? 'Y' : 'N' }, 0, 1);
+            try {
+                this.serial.Write(new Char[] { (IsHappy) ? 'Y' : 'N' }, 0, 1);
+            } catch (ArgumentNullException ex) {
+                Debug.Print(ex.Message);
+                Debug.Print("Der übergebene buffer ist null.");
+            } catch (InvalidOperationException ex) {
+                Debug.Print(ex.Message);
+                Debug.Print("Der angegebene Anschluss ist nicht offen.");
+            } catch (ArgumentOutOfRangeException ex) {
+                Debug.Print(ex.Message);
+                Debug.Print("Der offset-Parameter oder der count-Parameter liegt außerhalb eines gültigen\n" +
+                            "Bereichs des übergebenen buffer.offset oder count ist kleiner als 0.");
+            } catch (ArgumentException ex) {
+                Debug.Print(ex.Message);
+                Debug.Print("Die Summe von offset und count ist größer als die Länge von buffer.");
+            } catch (TimeoutException ex) {
+                Debug.Print(ex.Message);
+                Debug.Print("Der Vorgang konnte nicht vor Ablauf des Timeouts abgeschlossen werden.");
+            }
         }
 
         public Int32 PackageSize {

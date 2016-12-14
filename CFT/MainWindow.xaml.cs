@@ -28,9 +28,7 @@ namespace CerealFileTransfer {
                     portName = SerialPort.GetPortNames()[0];
                     break;
                 }
-                if (InputBox.Show("Cereal File Transfer",
-                                  "Please choose a Port: (" + String.Join(", ", SerialPort.GetPortNames()) + ")",
-                                  ref portName) == System.Windows.Forms.DialogResult.Cancel) {
+                if (InputBox.Show("Cereal File Transfer", "Please choose a Port: (" + String.Join(", ", SerialPort.GetPortNames()) + ")", ref portName) == System.Windows.Forms.DialogResult.Cancel) {
                     Environment.Exit(2);
                 }
                 portName = portName.ToUpper();
@@ -43,13 +41,14 @@ namespace CerealFileTransfer {
         }
 
         static String BytesToString(long byteCount) {
-            string[] suf = { "B", "KB", "MB", "GB", "TB", "PB", "EB" }; //Longs run out around EB
-            if (byteCount == 0)
-                return "0" + suf[0];
+            string[] suffix = { "B", "KB", "MB", "GB", "TB", "PB", "EB" }; // Longs run out around EB
+            if (byteCount == 0) {
+                return "0" + suffix[0];
+            }
             long bytes = Math.Abs(byteCount);
             int place = Convert.ToInt32(Math.Floor(Math.Log(bytes, 1024)));
             double num = Math.Round(bytes / Math.Pow(1024, place), 1);
-            return (Math.Sign(byteCount) * num).ToString() + suf[place];
+            return (Math.Sign(byteCount) * num).ToString() + suffix[place];
         }
 
         private void NetworkTimer_tick(Object o) {
@@ -74,13 +73,7 @@ namespace CerealFileTransfer {
                     this.networkTimer.Change(0, 500); // resume timer
                     return;
             }
-            /* OpenFileDialog fileDialog = new OpenFileDialog() {
-                FileName = System.IO.Path.GetFileName(fileName),
-                CheckFileExists = false,
-                ShowReadOnly = true,
-                Multiselect = false,
-                Title = "Save..."
-            };*/
+
             SaveFileDialog fileDialog = new SaveFileDialog() {
                 FileName = System.IO.Path.GetFileName(fileName),
                 CheckFileExists = false,
@@ -98,6 +91,7 @@ namespace CerealFileTransfer {
             Application.Current.Dispatcher.Invoke((Action)(() => {
                 this.Rtb_Log.AppendText("File Transfer Successful\n");
             }));
+
             this.networkTimer.Change(0, 500); // resume timer
         }
 
@@ -108,22 +102,20 @@ namespace CerealFileTransfer {
             this.fileName = fileDialog.FileName;
         }
 
-        private void Btn_send_Click(Object sender, RoutedEventArgs e) {
-            try {
-                if (this.fileName.Length == 0) {
-                    return;
-                }
-            } catch(Exception ex) {
-                Debug.Print(ex.Message);
+        private void Btn_send_Click(Object sender, RoutedEventArgs e) { 
+            if (this.fileName.Length == 0) {
                 return;
             }
-            System.IO.FileInfo fileInfo = new System.IO.FileInfo(this.fileName);
+            this.Btn_send.IsEnabled = false;
 
+            System.IO.FileInfo fileInfo = new System.IO.FileInfo(this.fileName);
             Byte[][] headerpackage = new Byte[1][];
-            String info = this.fileName + ';' + BytesToString(fileInfo.Length) + ';' + "\0" + ';' + Convert.ToString(this.file.GetPackages(this.fileName)) + ';' + "\0";
-            while (this.network.PackageSize != info.Length) {
-                info += '\0';
-            }
+            String info = this.fileName + ';' + 
+                          BytesToString(fileInfo.Length) + ';' +
+                          "\0" + ';' +
+                          Convert.ToString(this.file.GetPackages(this.fileName)) + ';' + 
+                          "\0";
+            while (this.network.PackageSize != info.Length) { info += '\0'; }
 
             headerpackage[0] = Encoding.UTF8.GetBytes(info);
             Byte[][] package = new Byte[this.file.GetPackages(this.fileName)][];
@@ -136,12 +128,12 @@ namespace CerealFileTransfer {
 
             if (!this.network.IsPartnerHappy) {
                 this.Rtb_Log.AppendText("File Transfer Rejected");
-                return;
+            } else {
+                this.Rtb_Log.AppendText("File Transfer Accepted\n");
+                this.network.SendPackage(package);
+                this.Rtb_Log.AppendText("Finished sending file\n");
             }
-
-            this.Rtb_Log.AppendText("File Transfer Accepted\n");
-            this.network.SendPackage(package);
-            this.Rtb_Log.AppendText("Finished sending file\n");
+            this.Btn_send.IsEnabled = true;
         }
 
         private void CFT_Loaded(Object sender, RoutedEventArgs e) {
