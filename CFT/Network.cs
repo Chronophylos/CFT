@@ -117,7 +117,7 @@ namespace CerealFileTransfer {
                 this.serial.Write(package[i], 0, package[i].Length);
 
                 this.dispatcher.Invoke((Action)(() => {
-                    this.progressBar.Value = this.serial.BytesToWrite + this.packageSize * i;
+                    this.progressBar.Value += this.packageSize * (i + 1);
                 }));               
             }
 
