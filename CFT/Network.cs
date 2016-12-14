@@ -114,11 +114,11 @@ namespace CerealFileTransfer {
             }));
 
             for (Int32 i = 0; i < package.Length; i++) {
+                this.serial.Write(package[i], 0, package[i].Length);
+
                 this.dispatcher.Invoke((Action)(() => {
                     this.progressBar.Value = this.serial.BytesToWrite + this.packageSize * i;
-                }));
-
-                this.serial.Write(package[i], 0, package[i].Length);
+                }));               
             }
 
             this.dispatcher.Invoke((Action)(() => {
@@ -129,34 +129,23 @@ namespace CerealFileTransfer {
         public bool IsDataAvailable {
             get {
                 try {
-                    if (this.serial.BytesToRead > 0) 
-                        return true;
-                    else 
-                        return false;
+                    return (this.serial.BytesToRead > 0) ? true : false;
                 } catch (InvalidOperationException ex) {
                     Debug.Print(ex.Message);
                 }
-
                 return false;
             }
         }
 
         public Boolean IsPartnerHappy {
             get {
-                while (!this.IsDataAvailable)
-                    ;
-                if (this.serial.ReadChar() == 'Y')
-                    return true;
-                else
-                    return false;
+                while (!this.IsDataAvailable);
+                return (this.serial.ReadChar() == 'Y') ? true : false;
             }
         }
 
         public void ImHappy(Boolean IsHappy = true) {
-            if (IsHappy)
-                this.serial.Write(new Char[] { 'Y' }, 0, 1);
-            else
-                this.serial.Write(new Char[] { 'N' }, 0, 1);
+            this.serial.Write(new Char[] { (IsHappy) ? 'Y' : 'N' }, 0, 1);
         }
 
         public Int32 PackageSize {
