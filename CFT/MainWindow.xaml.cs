@@ -65,9 +65,8 @@ namespace CerealFileTransfer {
                     return;
             }
 
-            String[] fileNameArray = fileName.Split('\\');
             OpenFileDialog fileDialog = new OpenFileDialog() {
-                FileName = fileNameArray[fileNameArray.Length - 1],
+                FileName = System.IO.Path.GetFileName(fileName),
                 CheckFileExists = false,
                 ShowReadOnly = true,
                 Multiselect = false
