@@ -37,7 +37,7 @@ namespace CerealFileTransfer {
             }
             this.Rtb_Log.AppendText("Using Port: " + portName + '\n');
 
-            this.network = new Network(portName, baudrate, bufferSize, packageSize, this.Pb_progress, Application.Current.Dispatcher);
+            this.network = new Network(portName, baudrate, bufferSize, packageSize, this.Pb_progress, this.Rtb_Log, Application.Current.Dispatcher);
             this.file = new File(packageSize);
             this.networkTimer = new Timer(this.NetworkTimer_tick, null, 0, 500);
             this.sendFile_Thread = new Thread(this.SendFile);

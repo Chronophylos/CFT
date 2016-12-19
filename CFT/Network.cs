@@ -15,9 +15,10 @@ namespace CerealFileTransfer {
         private Int32       packageSize;
         private SerialPort  serial;
         private ProgressBar progressBar;
+        private RichTextBox rtb;
         private Dispatcher  dispatcher;
 
-        public Network(String portName, Int32 baudrate, Int32 bufferSize, Int32 packageSize, ProgressBar progressBar, Dispatcher dispatcher) {
+        public Network(String portName, Int32 baudrate, Int32 bufferSize, Int32 packageSize, ProgressBar progressBar, RichTextBox rtb, Dispatcher dispatcher) {
             this.portName =         portName;
             this.baudrate =         baudrate;
             this.dataBits =         8;
@@ -26,6 +27,7 @@ namespace CerealFileTransfer {
             this.bufferSize =       bufferSize;
             this.packageSize =      packageSize;
             this.progressBar =      progressBar;
+            this.rtb =              rtb;
             this.dispatcher =       dispatcher;
 
             this.serial =   new SerialPort() {
@@ -115,6 +117,7 @@ namespace CerealFileTransfer {
                 }
                 this.dispatcher.Invoke((Action)(() => {
                     this.progressBar.Value = this.packageSize * i;
+                    this.rtb.AppendText(Convert.ToString(count / i));
                 }));
                 package[i] = buffer;
             }
@@ -153,6 +156,7 @@ namespace CerealFileTransfer {
                 }
                 this.dispatcher.Invoke((Action)(() => {
                     this.progressBar.Value = (i + 1);
+                    this.rtb.AppendText(Convert.ToString(package.Length / i));
                 }));               
             }
 
